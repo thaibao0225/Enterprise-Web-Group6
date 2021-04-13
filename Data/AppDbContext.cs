@@ -35,5 +35,7 @@ namespace Album.Data {
             }
         }
 
+        public DbSet<Article> Article { set; get; }
+
     }
 }

@@ -14,5 +14,6 @@ namespace Album.Models
         [DataType(DataType.Date)]
         public DateTime? Birthday {set; get;}
 
+
     }
 }

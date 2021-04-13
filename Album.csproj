@@ -26,5 +26,6 @@
     <Folder Include="Areas\Admin\" />
     <Folder Include="Areas\Admin\Pages\" />
     <Folder Include="Areas\Admin\Pages\Role\" />
+    <Folder Include="uploads\" />
   </ItemGroup>
 </Project>

@@ -165,16 +165,13 @@ namespace Album.Migrations
                     b.Property<string>("dl_CreateBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("dl_CreateDate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("dl_CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("dl_Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("dl_ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("dl_Status")

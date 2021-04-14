@@ -1,0 +1,66 @@
+﻿@page "/thoi-han/"
+@model Album.Areas.Admin.Pages.Deadlines.IndexModel
+@{
+}
+
+@{
+    ViewData["Title"] = "Danh sách Deadline";
+}
+
+<h1>Danh sách Deadline</h1>
+
+<p>
+    <a asp-page="Create">Tạo mới</a>
+</p>
+<form method="get" asp-page="./Index">
+    <p>
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline[0].dl_TimeDeadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline[0].dl_ModifiedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline[0].dl_Status)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Deadline)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dl_TimeDeadline)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Deadline[0].dl_ModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Deadline[0].dl_Status)
+            </td>
+
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.dl_Id">Sửa</a> |
+                <a asp-page="./Details" asp-route-id="@item.dl_Id">Xem</a> |
+                <a asp-page="./Delete" asp-route-id="@item.dl_Id">Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

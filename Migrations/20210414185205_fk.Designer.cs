@@ -4,14 +4,16 @@ using Album.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Album.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210414185205_fk")]
+    partial class fk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,24 +118,6 @@ namespace Album.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("Album.Models.Comment", b =>
-                {
-                    b.Property<int>("cmt_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("comment_Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("comment_DateUpload")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("cmt_Id");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("Album.Models.Course", b =>
                 {
                     b.Property<int>("course_Id")
@@ -152,42 +136,6 @@ namespace Album.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("Album.Models.Deadline", b =>
-                {
-                    b.Property<int>("dl_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_CreateBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_CreateDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("dl_TimeDeadline")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("dl_Id");
-
-                    b.ToTable("Deadlines");
-                });
-
             modelBuilder.Entity("Album.Models.DeadlineCate", b =>
                 {
                     b.Property<int>("dlCate_Id")
@@ -204,65 +152,6 @@ namespace Album.Migrations
                     b.HasKey("dlCate_Id");
 
                     b.ToTable("DeadlineCate");
-                });
-
-            modelBuilder.Entity("Album.Models.File", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("PublishDate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("file_CreateBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("file_DateUpload")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("file_IsSelected")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PublishDate");
-
-                    b.ToTable("file");
-                });
-
-            modelBuilder.Entity("Album.Models.RegisterComment", b =>
-                {
-                    b.Property<int>("rescmt_CmtId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("rescmt_FileId")
-                        .HasColumnType("int");
-
-                    b.HasKey("rescmt_CmtId");
-
-                    b.HasIndex("rescmt_FileId");
-
-                    b.ToTable("RegisterComments");
-                });
-
-            modelBuilder.Entity("Album.Models.RegisterDeadline", b =>
-                {
-                    b.Property<int>("rd_DeadineCate")
-                        .HasColumnType("int");
-
-                    b.Property<int>("rd_DeadlineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("rd_DeadineCate");
-
-                    b.HasIndex("rd_DeadlineId");
-
-                    b.ToTable("RegisterDeadlines");
                 });
 
             modelBuilder.Entity("Album.Models.RegisterEvent", b =>
@@ -419,43 +308,6 @@ namespace Album.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens");
-                });
-
-            modelBuilder.Entity("Album.Models.File", b =>
-                {
-                    b.HasOne("Album.Models.Deadline", "Deadline")
-                        .WithMany()
-                        .HasForeignKey("PublishDate");
-                });
-
-            modelBuilder.Entity("Album.Models.RegisterComment", b =>
-                {
-                    b.HasOne("Album.Models.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("rescmt_CmtId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Album.Models.File", "File")
-                        .WithMany()
-                        .HasForeignKey("rescmt_FileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Album.Models.RegisterDeadline", b =>
-                {
-                    b.HasOne("Album.Models.Deadline", "Deadline")
-                        .WithMany()
-                        .HasForeignKey("rd_DeadineCate")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Album.Models.DeadlineCate", "DeadlineCate")
-                        .WithMany()
-                        .HasForeignKey("rd_DeadlineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Album.Models.RegisterEvent", b =>

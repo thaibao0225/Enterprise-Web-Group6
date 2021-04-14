@@ -11,13 +11,11 @@ namespace Album.Models
     public class Comment
     {
         [Key]
-        public int comment_Id { get; set; }
+        public int cmt_Id { get; set; }
 
         public string comment_Content { get; set; }
 
         //public int comment_User { get; set; } //Id Users
-
-
 
         public DateTime comment_DateUpload { get; set; }
     }

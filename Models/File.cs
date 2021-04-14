@@ -19,7 +19,10 @@ namespace Album.Models
 
         [Display(Name = "Thời hạn")]
         [DataType(DataType.Date)]
-        public DateTime PublishDate { get; set; } //dl_Id File
+        //public DateTime PublishDate { get; set; } //dl_Id File
+        //public int rescmt_FileId { set; get; }
+        [ForeignKey("PublishDate")]
+        public virtual Deadline Deadline { set; get; }
 
         public bool file_IsSelected { get; set; }
 

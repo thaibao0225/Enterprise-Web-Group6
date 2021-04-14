@@ -11,9 +11,9 @@ namespace Album.Models
     public class RegisterDeadline
     {
         [Key]
-        public int rd_DeadineCate { get; set; }
+        public int rd_DeadineCate { get; set; } //dl_Id Deadline
 
-        public int rd_DeadlineId { get; set; }
+        public int rd_DeadlineId { get; set; } //dlCate_Id DeadlineCate
 
     }
 }

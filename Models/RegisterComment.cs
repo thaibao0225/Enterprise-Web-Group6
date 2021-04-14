@@ -11,9 +11,9 @@ namespace Album.Models
     public class RegisterComment
     {
         [Key]
-        public int rescmt_CmtId { get; set; }
+        public int rescmt_CmtId { get; set; } //comment_Id Comment
 
-        public int rescmt_FileId { get;set }
+        public int rescmt_FileId { get; set; } //ID File
 
     }
 }

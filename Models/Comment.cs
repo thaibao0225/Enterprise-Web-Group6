@@ -15,7 +15,9 @@ namespace Album.Models
 
         public string comment_Content { get; set; }
 
-        public int comment_User { get; set; }
+        //public int comment_User { get; set; } //Id Users
+
+
 
         public DateTime comment_DateUpload { get; set; }
     }

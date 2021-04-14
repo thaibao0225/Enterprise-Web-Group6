@@ -19,7 +19,7 @@ namespace Album.Models
 
         [Display(Name = "Thời hạn")]
         [DataType(DataType.Date)]
-        public DateTime PublishDate { get; set; }
+        public DateTime PublishDate { get; set; } //dl_Id File
 
         public bool file_IsSelected { get; set; }
 

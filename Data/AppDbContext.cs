@@ -36,6 +36,14 @@ namespace Album.Data {
         }
 
         public DbSet<Article> Article { set; get; }
+        public DbSet<Comment> Comments { set; get; }
+        public DbSet<Course> Courses { set; get; }
+        public DbSet<Deadline> Deadline { set; get; }
+        public DbSet<DeadlineCate> DeadlineCate { set; get; }
+        public DbSet<File> File { set; get; }
+        public DbSet<RegisterComment> RegisterComment { set; get; }
+        public DbSet<RegisterDeadline> RegisterDeadline { set; get; }
+        public DbSet<RegisterEvent> RegisterEvent { set; get; }
 
     }
 }

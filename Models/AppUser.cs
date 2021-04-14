@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,6 +14,8 @@ namespace Album.Models
         public string Address {set; get;}
         [DataType(DataType.Date)]
         public DateTime? Birthday {set; get;}
+        public List<RegisterEvent> RegisterEvent { get; set; }
+
 
 
     }

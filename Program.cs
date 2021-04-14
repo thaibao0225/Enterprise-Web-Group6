@@ -20,7 +20,8 @@ namespace Album
             // Tạo một scope dịch vụ
             using (var scope = host.Services.CreateScope())
             {
-                InsertTestArticle.Initialize(scope.ServiceProvider);
+                //InsertTestArticle.Initialize(scope.ServiceProvider);
+                //InsertTestDeadline.Initialize(scope.ServiceProvider);
             }
 
 

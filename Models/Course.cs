@@ -16,5 +16,7 @@ namespace Album.Models
         public string course_Name { get; set; }
 
         public string course_Descrition { get; set; }
+        public List<RegisterEvent> RegisterEvent { get; set; }
+
     }
 }

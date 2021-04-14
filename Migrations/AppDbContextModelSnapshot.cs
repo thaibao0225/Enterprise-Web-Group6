@@ -129,6 +129,9 @@ namespace Album.Migrations
                     b.Property<DateTime>("comment_DateUpload")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("comment_User")
+                        .HasColumnType("int");
+
                     b.HasKey("cmt_Id");
 
                     b.ToTable("Comments");
@@ -165,16 +168,13 @@ namespace Album.Migrations
                     b.Property<string>("dl_CreateBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("dl_CreateDate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("dl_CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("dl_Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("dl_ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dl_Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("dl_Status")
@@ -188,77 +188,30 @@ namespace Album.Migrations
                     b.ToTable("Deadlines");
                 });
 
-            modelBuilder.Entity("Album.Models.DeadlineCate", b =>
-                {
-                    b.Property<int>("dlCate_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("dlCate_Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("dlCate_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("dlCate_Id");
-
-                    b.ToTable("DeadlineCate");
-                });
-
-            modelBuilder.Entity("Album.Models.File", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("PublishDate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("file_CreateBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("file_DateUpload")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("file_IsSelected")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PublishDate");
-
-                    b.ToTable("file");
-                });
-
             modelBuilder.Entity("Album.Models.RegisterComment", b =>
                 {
-                    b.Property<int>("rescmt_CmtId")
-                        .HasColumnType("int");
-
                     b.Property<int>("rescmt_FileId")
                         .HasColumnType("int");
 
-                    b.HasKey("rescmt_CmtId");
+                    b.Property<int>("rescmt_CmtId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("rescmt_FileId");
+                    b.HasKey("rescmt_FileId", "rescmt_CmtId");
+
+                    b.HasIndex("rescmt_CmtId");
 
                     b.ToTable("RegisterComments");
                 });
 
             modelBuilder.Entity("Album.Models.RegisterDeadline", b =>
                 {
-                    b.Property<int>("rd_DeadineCate")
+                    b.Property<int>("rd_EventId")
                         .HasColumnType("int");
 
                     b.Property<int>("rd_DeadlineId")
                         .HasColumnType("int");
 
-                    b.HasKey("rd_DeadineCate");
+                    b.HasKey("rd_EventId", "rd_DeadlineId");
 
                     b.HasIndex("rd_DeadlineId");
 
@@ -270,24 +223,48 @@ namespace Album.Migrations
                     b.Property<int>("resEvent_CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("resEvent_DeadlineCate")
-                        .HasColumnType("int");
+                    b.Property<string>("resEvent_UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("resEvent_EventId")
                         .HasColumnType("int");
 
-                    b.Property<string>("resEvent_UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("resEvent_CourseId");
-
-                    b.HasIndex("resEvent_DeadlineCate");
+                    b.HasKey("resEvent_CourseId", "resEvent_UserId", "resEvent_EventId");
 
                     b.HasIndex("resEvent_EventId");
 
                     b.HasIndex("resEvent_UserId");
 
                     b.ToTable("RegisterEvents");
+                });
+
+            modelBuilder.Entity("Album.Models.UserFile", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("file_CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("file_DateUpload")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("file_DeadlineId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("file_IsSelected")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("file_DeadlineId");
+
+                    b.ToTable("File");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -421,23 +398,16 @@ namespace Album.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Album.Models.File", b =>
-                {
-                    b.HasOne("Album.Models.Deadline", "Deadline")
-                        .WithMany()
-                        .HasForeignKey("PublishDate");
-                });
-
             modelBuilder.Entity("Album.Models.RegisterComment", b =>
                 {
                     b.HasOne("Album.Models.Comment", "Comment")
-                        .WithMany()
+                        .WithMany("RegisterComment")
                         .HasForeignKey("rescmt_CmtId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Album.Models.File", "File")
-                        .WithMany()
+                    b.HasOne("Album.Models.UserFile", "UserFile")
+                        .WithMany("RegisterComment")
                         .HasForeignKey("rescmt_FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -445,15 +415,15 @@ namespace Album.Migrations
 
             modelBuilder.Entity("Album.Models.RegisterDeadline", b =>
                 {
-                    b.HasOne("Album.Models.Deadline", "Deadline")
-                        .WithMany()
-                        .HasForeignKey("rd_DeadineCate")
+                    b.HasOne("Album.Models.Deadline", "Dealine")
+                        .WithMany("RegisterDeadline")
+                        .HasForeignKey("rd_DeadlineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Album.Models.DeadlineCate", "DeadlineCate")
-                        .WithMany()
-                        .HasForeignKey("rd_DeadlineId")
+                    b.HasOne("Album.Models.Article", "Article")
+                        .WithMany("RegisterDeadline")
+                        .HasForeignKey("rd_EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -461,26 +431,31 @@ namespace Album.Migrations
             modelBuilder.Entity("Album.Models.RegisterEvent", b =>
                 {
                     b.HasOne("Album.Models.Course", "Course")
-                        .WithMany()
+                        .WithMany("RegisterEvent")
                         .HasForeignKey("resEvent_CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Album.Models.DeadlineCate", "DeadlineCate")
-                        .WithMany()
-                        .HasForeignKey("resEvent_DeadlineCate")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Album.Models.Article", "Article")
-                        .WithMany()
+                        .WithMany("RegisterEvent")
                         .HasForeignKey("resEvent_EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Album.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("resEvent_UserId");
+                        .WithMany("RegisterEvent")
+                        .HasForeignKey("resEvent_UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.UserFile", b =>
+                {
+                    b.HasOne("Album.Models.Deadline", "Deadline")
+                        .WithMany("UserFile")
+                        .HasForeignKey("file_DeadlineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

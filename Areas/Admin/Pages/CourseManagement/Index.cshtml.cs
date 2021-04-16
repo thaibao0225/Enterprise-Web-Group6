@@ -1,15 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Album.Data;
 using Album.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Ablum.Pages.Blog
+namespace Album.Areas.Admin.Pages.CourseManagement
 {
     public class IndexModel : PageModel
     {
@@ -20,7 +19,7 @@ namespace Ablum.Pages.Blog
             _context = context;
         }
 
-        public IList<Article> Article { get;set; }
+        public IList<Course> Course { get; set; }
 
         // Chuỗi để tìm kiếm, được binding tự động kể cả là truy 
         // cập get
@@ -30,15 +29,21 @@ namespace Ablum.Pages.Blog
         {
 
             // Truy vấn lấy các Article
-            var articles = from a in  _context.Article select a;
+            var course = from a in _context.Courses select a;
+
+            //string aa = deadline.ToString();
+
             if (!string.IsNullOrEmpty(SearchString))
             {
                 Console.WriteLine(SearchString);
                 // Truy vấn lọc các Article mà tiêu đề chứa chuỗi tìm kiếm
-                articles = articles.Where(article => article.Title.Contains(SearchString));
+                course = course.Where(deadline => deadline.course_Name.Contains(SearchString));
             }
             // Đọc (nạp) Article
-            Article = await articles.ToListAsync();
+
+            Course = await course.ToListAsync();
+
+           
         }
     }
 }

@@ -123,6 +123,9 @@ namespace Album.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("comment_Content")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +136,8 @@ namespace Album.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("cmt_Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Comments");
                 });
@@ -203,6 +208,21 @@ namespace Album.Migrations
                     b.ToTable("RegisterComments");
                 });
 
+            modelBuilder.Entity("Album.Models.RegisterCourse", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("RegisterCourse");
+                });
+
             modelBuilder.Entity("Album.Models.RegisterDeadline", b =>
                 {
                     b.Property<int>("rd_EventId")
@@ -218,24 +238,19 @@ namespace Album.Migrations
                     b.ToTable("RegisterDeadlines");
                 });
 
-            modelBuilder.Entity("Album.Models.RegisterEvent", b =>
+            modelBuilder.Entity("Album.Models.RegisterEventCourse", b =>
                 {
-                    b.Property<int>("resEvent_CourseId")
+                    b.Property<int>("re_CourseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("resEvent_UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("resEvent_EventId")
+                    b.Property<int>("re_Event")
                         .HasColumnType("int");
 
-                    b.HasKey("resEvent_CourseId", "resEvent_UserId", "resEvent_EventId");
+                    b.HasKey("re_CourseId", "re_Event");
 
-                    b.HasIndex("resEvent_EventId");
+                    b.HasIndex("re_Event");
 
-                    b.HasIndex("resEvent_UserId");
-
-                    b.ToTable("RegisterEvents");
+                    b.ToTable("RegisterEventCourse");
                 });
 
             modelBuilder.Entity("Album.Models.UserFile", b =>
@@ -398,6 +413,13 @@ namespace Album.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("Album.Models.Comment", b =>
+                {
+                    b.HasOne("Album.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+                });
+
             modelBuilder.Entity("Album.Models.RegisterComment", b =>
                 {
                     b.HasOne("Album.Models.Deadline", "Deadline")
@@ -409,6 +431,21 @@ namespace Album.Migrations
                     b.HasOne("Album.Models.Comment", "Comment")
                         .WithMany("RegisterComment")
                         .HasForeignKey("rescmt_CmtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.RegisterCourse", b =>
+                {
+                    b.HasOne("Album.Models.Course", "Course")
+                        .WithMany("RegisterCourse")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Album.Models.AppUser", "AppUser")
+                        .WithMany("RegisterCourse")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -428,23 +465,17 @@ namespace Album.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Album.Models.RegisterEvent", b =>
+            modelBuilder.Entity("Album.Models.RegisterEventCourse", b =>
                 {
                     b.HasOne("Album.Models.Course", "Course")
-                        .WithMany("RegisterEvent")
-                        .HasForeignKey("resEvent_CourseId")
+                        .WithMany("RegisterEventCourse")
+                        .HasForeignKey("re_CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Album.Models.Article", "Article")
-                        .WithMany("RegisterEvent")
-                        .HasForeignKey("resEvent_EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Album.Models.AppUser", "AppUser")
-                        .WithMany("RegisterEvent")
-                        .HasForeignKey("resEvent_UserId")
+                        .WithMany("RegisterEventCourse")
+                        .HasForeignKey("re_Event")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

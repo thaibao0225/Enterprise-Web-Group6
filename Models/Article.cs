@@ -22,8 +22,10 @@ namespace Album.Models
 
         [Display(Name = "Nội dung")]
         public string Content { set; get; }
-        public List<RegisterEvent> RegisterEvent { get; set; }
+        public List<RegisterEventCourse> RegisterEventCourse { get; set; }
         public List<RegisterDeadline> RegisterDeadline { get; set; }
+
+        
 
 
     }

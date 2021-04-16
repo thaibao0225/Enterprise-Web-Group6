@@ -9,7 +9,7 @@ using Album.Models;
 using Album.Data;
 using Microsoft.AspNetCore.Identity;
 
-namespace Album.Pages.Blog
+namespace Album.Areas.Admin.Pages.RoleClaims
 {
     public class CreateModel : PageModel
     {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Album.Migrations
 {
-    public partial class initialComment : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,21 +20,6 @@ namespace Album.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    cmt_Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    comment_Content = table.Column<string>(nullable: true),
-                    comment_User = table.Column<int>(nullable: false),
-                    comment_DateUpload = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.cmt_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,6 +98,30 @@ namespace Album.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RegisterEventCourse",
+                columns: table => new
+                {
+                    re_CourseId = table.Column<int>(nullable: false),
+                    re_Event = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisterEventCourse", x => new { x.re_CourseId, x.re_Event });
+                    table.ForeignKey(
+                        name: "FK_RegisterEventCourse_Courses_re_CourseId",
+                        column: x => x.re_CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "course_Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RegisterEventCourse_Articles_re_Event",
+                        column: x => x.re_Event,
+                        principalTable: "Articles",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "File",
                 columns: table => new
                 {
@@ -132,30 +141,6 @@ namespace Album.Migrations
                         column: x => x.file_DeadlineId,
                         principalTable: "Deadlines",
                         principalColumn: "dl_Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RegisterComments",
-                columns: table => new
-                {
-                    rescmt_CmtId = table.Column<int>(nullable: false),
-                    DeadlineId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegisterComments", x => new { x.DeadlineId, x.rescmt_CmtId });
-                    table.ForeignKey(
-                        name: "FK_RegisterComments_Deadlines_DeadlineId",
-                        column: x => x.DeadlineId,
-                        principalTable: "Deadlines",
-                        principalColumn: "dl_Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RegisterComments_Comments_rescmt_CmtId",
-                        column: x => x.rescmt_CmtId,
-                        principalTable: "Comments",
-                        principalColumn: "cmt_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -205,31 +190,46 @@ namespace Album.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RegisterEvents",
+                name: "Comments",
                 columns: table => new
                 {
-                    resEvent_CourseId = table.Column<int>(nullable: false),
-                    resEvent_UserId = table.Column<string>(nullable: false),
-                    resEvent_EventId = table.Column<int>(nullable: false)
+                    cmt_Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    comment_Content = table.Column<string>(nullable: true),
+                    comment_User = table.Column<int>(nullable: false),
+                    AppUserId = table.Column<string>(nullable: true),
+                    comment_DateUpload = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegisterEvents", x => new { x.resEvent_CourseId, x.resEvent_UserId, x.resEvent_EventId });
+                    table.PrimaryKey("PK_Comments", x => x.cmt_Id);
                     table.ForeignKey(
-                        name: "FK_RegisterEvents_Courses_resEvent_CourseId",
-                        column: x => x.resEvent_CourseId,
+                        name: "FK_Comments_Users_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegisterCourse",
+                columns: table => new
+                {
+                    CourseId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisterCourse", x => new { x.UserId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_RegisterCourse_Courses_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "course_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RegisterEvents_Articles_resEvent_EventId",
-                        column: x => x.resEvent_EventId,
-                        principalTable: "Articles",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RegisterEvents_Users_resEvent_UserId",
-                        column: x => x.resEvent_UserId,
+                        name: "FK_RegisterCourse_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -320,6 +320,35 @@ namespace Album.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RegisterComments",
+                columns: table => new
+                {
+                    rescmt_CmtId = table.Column<int>(nullable: false),
+                    DeadlineId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisterComments", x => new { x.DeadlineId, x.rescmt_CmtId });
+                    table.ForeignKey(
+                        name: "FK_RegisterComments_Deadlines_DeadlineId",
+                        column: x => x.DeadlineId,
+                        principalTable: "Deadlines",
+                        principalColumn: "dl_Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RegisterComments_Comments_rescmt_CmtId",
+                        column: x => x.rescmt_CmtId,
+                        principalTable: "Comments",
+                        principalColumn: "cmt_Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AppUserId",
+                table: "Comments",
+                column: "AppUserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_File_file_DeadlineId",
                 table: "File",
@@ -331,19 +360,19 @@ namespace Album.Migrations
                 column: "rescmt_CmtId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RegisterCourse_CourseId",
+                table: "RegisterCourse",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RegisterDeadlines_rd_DeadlineId",
                 table: "RegisterDeadlines",
                 column: "rd_DeadlineId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RegisterEvents_resEvent_EventId",
-                table: "RegisterEvents",
-                column: "resEvent_EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RegisterEvents_resEvent_UserId",
-                table: "RegisterEvents",
-                column: "resEvent_UserId");
+                name: "IX_RegisterEventCourse_re_Event",
+                table: "RegisterEventCourse",
+                column: "re_Event");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -394,10 +423,13 @@ namespace Album.Migrations
                 name: "RegisterComments");
 
             migrationBuilder.DropTable(
+                name: "RegisterCourse");
+
+            migrationBuilder.DropTable(
                 name: "RegisterDeadlines");
 
             migrationBuilder.DropTable(
-                name: "RegisterEvents");
+                name: "RegisterEventCourse");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");

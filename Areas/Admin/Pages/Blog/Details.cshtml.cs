@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Album.Data;
 using Album.Models;
 
-namespace Ablum.Pages.Blog
+namespace Album.Areas.Admin.Pages.Blog
 {
     public class DetailsModel : PageModel
     {

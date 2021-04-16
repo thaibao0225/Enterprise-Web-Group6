@@ -9,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using Album.Data;
 using Album.Models;
 
-namespace Ablum.Pages.Blog
+namespace Album.Areas.Admin.Pages.CourseManagement
 {
     public class EditModel : PageModel
     {
-        private readonly Album.Data.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public EditModel(Album.Data.AppDbContext context)
+        public EditModel(AppDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Article Article { get; set; }
+        public Course Course { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +30,9 @@ namespace Ablum.Pages.Blog
                 return NotFound();
             }
 
-            Article = await _context.Article.FirstOrDefaultAsync(m => m.ID == id);
+            Course = await _context.Courses.FirstOrDefaultAsync(m => m.course_Id == id);
 
-            if (Article == null)
+            if (Course == null)
             {
                 return NotFound();
             }
@@ -48,7 +48,7 @@ namespace Ablum.Pages.Blog
                 return Page();
             }
 
-            _context.Attach(Article).State = EntityState.Modified;
+            _context.Attach(Course).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Ablum.Pages.Blog
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ArticleExists(Article.ID))
+                if (!ArticleExists(Course.course_Id))
                 {
                     return NotFound();
                 }
@@ -71,7 +71,7 @@ namespace Ablum.Pages.Blog
 
         private bool ArticleExists(int id)
         {
-            return _context.Article.Any(e => e.ID == id);
+            return _context.Courses.Any(e => e.course_Id == id);
         }
     }
 }

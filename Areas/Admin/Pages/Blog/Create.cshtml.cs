@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Album.Data;
-using Album.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Album.Data;
+using Album.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Album.Areas.Admin.Pages.Deadlines
+namespace Album.Areas.Admin.Pages.Blog
 {
     public class CreateModel : PageModel
     {
@@ -19,12 +21,16 @@ namespace Album.Areas.Admin.Pages.Deadlines
         }
 
         public IActionResult OnGet()
-        {   
+        {
             return Page();
         }
 
         [BindProperty]
-        public Deadline Deadline { get; set; }
+        public Article Article { get; set; }
+
+        public List<Course>  Course { get; set; }
+
+        public string nameCourse { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -35,10 +41,14 @@ namespace Album.Areas.Admin.Pages.Deadlines
                 return Page();
             }
 
-            _context.Deadline.Add(Deadline);
+            
+            _context.Article.Add(Article);
+
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
+
+
     }
 }

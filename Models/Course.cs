@@ -13,11 +13,15 @@ namespace Album.Models
         [Key]
         public int course_Id { get; set; }
 
+        [Display(Name = "Tiêu đề")]
         public string course_Name { get; set; }
 
+        [Display(Name = "Mô Tả")]
         public string course_Descrition { get; set; }
-        public List<RegisterEvent> RegisterEvent { get; set; }
+        public List<RegisterEventCourse> RegisterEventCourse { get; set; }
         public List<RegisterCourse> RegisterCourse { get; set; }
+
+        
 
 
 

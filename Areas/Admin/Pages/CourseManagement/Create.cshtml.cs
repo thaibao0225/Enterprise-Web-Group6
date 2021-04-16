@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Album.Data;
 using Album.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Ablum.Pages.Blog
+namespace Album.Areas.Admin.Pages.CourseManagement
 {
     public class CreateModel : PageModel
     {
-        private readonly Album.Data.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CreateModel(Album.Data.AppDbContext context)
+        public CreateModel(AppDbContext context)
         {
             _context = context;
         }
@@ -25,7 +24,7 @@ namespace Ablum.Pages.Blog
         }
 
         [BindProperty]
-        public Article Article { get; set; }
+        public Course Course { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -36,7 +35,7 @@ namespace Ablum.Pages.Blog
                 return Page();
             }
 
-            _context.Article.Add(Article);
+            _context.Courses.Add(Course);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

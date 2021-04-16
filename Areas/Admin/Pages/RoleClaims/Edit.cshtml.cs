@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace Album.Pages.Blog {
+namespace Album.Areas.Admin.Pages.RoleClaims
+{
     public class EditModel : PageModel {
         private readonly AppDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;

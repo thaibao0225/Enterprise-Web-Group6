@@ -26,7 +26,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Article[0].PublishDate)
             </th>
-
+            <th>
+                <h3>Course</h3>
+            </th>
+            <th>
+                <h3> Người Tạo</h3>
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,6 +43,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PublishDate)
+            </td>
+            <td>
+                <h3>Course</h3>
+            </td>
+            <td>
+                <h3> Người Tạo</h3>
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Sửa</a> |

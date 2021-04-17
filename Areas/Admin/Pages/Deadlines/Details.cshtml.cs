@@ -31,10 +31,14 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         public List<UserFile> userFilesList { get; set; }
 
+        [BindProperty]
         public List<Comment> userCommentList { get; set; }
 
         [BindProperty]
         public Comment cuurentComment { get; set; }
+
+        [BindProperty]
+        public string cmtContext { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -50,11 +54,13 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             userFilesList = userFile.ToList();
 
-            ///// Hien thi Comment
+            /// Hien thi Comment
+            /// var article = from a in _context.Article select a; 
 
-            //var userComment = _context.Comment;
 
-            //userCommentList = userComment.ToList();
+            var userComment = from a in _context.Comments select a;
+
+            userCommentList = userComment.ToList();
 
 
             if (Deadline == null)
@@ -97,19 +103,28 @@ namespace Album.Areas.Admin.Pages.Deadlines
                         file_DeadlineId = id,
                         file_CreateBy = "Thai Bao"
                     };
+                    _context.userFiles.Add(UserFile);
+                    await _context.SaveChangesAsync();
                 }
 
-                _context.userFiles.Add(UserFile);
-                await _context.SaveChangesAsync();
+                
             }
 
-            //if(cuurentComment != null)
-            //{
-            //    cuurentComment.comment_DateUpload = DateTime.Now;
 
-            //    _context.Comment.Add(cuurentComment);
-            //    await _context.SaveChangesAsync();
-            //}
+            // phan comment
+            if (cmtContext != null)
+            {
+                cuurentComment = new Comment()
+                {
+                    commentDeadline = id,
+                    comment_DateUpload = DateTime.Now,
+                    comment_Content = cmtContext
+                };
+                                
+
+                _context.Comments.Add(cuurentComment);
+                await _context.SaveChangesAsync();
+            }
 
 
 
@@ -117,10 +132,15 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             userFilesList = userFile.ToList();
 
+            var userComment = from a in _context.Comments select a;
+
+            userCommentList = userComment.ToList();
+
             if (id == null)
             {
                 return NotFound();
             }
+
 
             Deadline = await _context.Deadline.FirstOrDefaultAsync(m => m.dl_Id == id);
 

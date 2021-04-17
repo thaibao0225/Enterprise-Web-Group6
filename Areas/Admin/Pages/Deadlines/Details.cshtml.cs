@@ -78,7 +78,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
 
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             if (FileUploads != null)
             {
@@ -94,7 +94,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
                     {
                         Title = FileUpload.FileName,
                         file_IsSelected = false,
-                        file_DeadlineId = 1,
+                        file_DeadlineId = id,
                         file_CreateBy = "Thai Bao"
                     };
                 }

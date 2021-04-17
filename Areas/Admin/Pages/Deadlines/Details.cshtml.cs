@@ -19,13 +19,17 @@ namespace Album.Areas.Admin.Pages.Deadlines
         private readonly AppDbContext _context;
         private IHostingEnvironment _environment;
 
-        public DetailsModel(AppDbContext context,IHostingEnvironment environment)
+        public DetailsModel(AppDbContext context, IHostingEnvironment environment)
         {
             _context = context;
             _environment = environment;
         }
 
         public Deadline Deadline { get; set; }
+
+        public UserFile UserFile { get; set; }
+
+        public List<UserFile> userFilesList { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,6 +40,10 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             Deadline = await _context.Deadline.FirstOrDefaultAsync(m => m.dl_Id == id);
 
+            var userFile = _context.userFiles;
+
+            userFilesList = userFile.ToList();
+
             if (Deadline == null)
             {
                 return NotFound();
@@ -43,7 +51,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
             return Page();
         }
 
-        
+
 
         [Required(ErrorMessage = "Chọn một file")]
         [DataType(DataType.Upload)]
@@ -62,8 +70,23 @@ namespace Album.Areas.Admin.Pages.Deadlines
                     {
                         await FileUpload.CopyToAsync(fileStream);
                     }
+
+                    UserFile = new UserFile()
+                    {
+                        Title = FileUpload.FileName,
+                        file_IsSelected = false,
+                        file_DeadlineId = 1,
+                        file_CreateBy = "Thai Bao"
+                    };
+
                 }
+
+                _context.userFiles.Add(UserFile);
+                await _context.SaveChangesAsync();
             }
+            var userFile = _context.userFiles;
+
+            userFilesList = userFile.ToList();
 
 
             if (id == null)

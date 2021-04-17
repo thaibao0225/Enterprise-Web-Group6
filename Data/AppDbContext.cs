@@ -52,7 +52,7 @@ namespace Album.Data {
         public DbSet<Comment> Comments { set; get; }
         public DbSet<Course> Courses { set; get; }
         public DbSet<Deadline> Deadline { set; get; }
-        public DbSet<UserFile> File { set; get; }
+        public DbSet<UserFile> userFiles { set; get; }
         public DbSet<RegisterComment> RegisterComment { set; get; }
         public DbSet<RegisterDeadline> RegisterDeadline { set; get; }
         //public DbSet<RegisterEventCourse> RegisterEventCourse { set; get; }

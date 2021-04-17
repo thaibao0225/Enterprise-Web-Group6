@@ -37,12 +37,22 @@
 </div>
 <div>
     <form method="post" enctype="multipart/form-data">
-        <label asp-for="@Model.FileUploads"></label>
+        @*<label asp-for="@Model.FileUploads"></label>*@
         <input asp-for="@Model.FileUploads" />
         <br />
-        <span asp-validation-formaction="@Model.FileUploads"></span>
+        @*<span asp-validation-formaction="@Model.FileUploads"></span>*@
 
-        <button class="btn btn-danger"  asp-page="Details">Upload</button>
+        @{ 
+            foreach (var item in Model.userFilesList)
+            {
+                <div>
+                    <img src="https://cms.greenwich.edu.vn/theme/image.php/adaptable/core/1596790129/f/pdf" alt="pdf" />
+                    <a href="#">@item.Title</a>
+                </div>
+            }
+        }
+
+        <button class="btn btn-danger"  asp-page="Details" >Upload</button>
     </form>
 </div>
 <hr />

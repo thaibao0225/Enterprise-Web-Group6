@@ -1,0 +1,62 @@
+﻿@page "/file-management/"
+@model Album.Areas.Admin.Pages.fileManagement.IndexModel
+@{
+    ViewData["Title"] = "Danh sách File";
+}
+<h1>Danh sách File</h1>
+
+<form method="get" asp-page="./Index">
+    <p>
+        Title: <input type="text"  />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Event
+            </th>
+            <th>
+                Deadline
+            </th>
+            <th>
+                File
+            </th>
+            <th>
+                Select
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model.userFileList)
+            {
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        2
+                    </td>
+                    <td>
+                        <a href="/uploads/@item.Title">@item.Title</a> 
+                    </td>
+                    <td>
+                        @item.file_IsSelected
+                    </td>
+                    <td>
+                        5
+                    </td>
+
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>

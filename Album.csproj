@@ -23,8 +23,13 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\" />
-    <Folder Include="Areas\Admin\Pages\" />
     <Folder Include="Areas\Admin\Pages\Role\" />
+    <Folder Include="uploads\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Areas\Admin\Pages\Deadlines\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

@@ -1,0 +1,59 @@
+﻿@page "/course-management/"
+@model Album.Areas.Admin.Pages.CourseManagement.IndexModel
+@{
+}
+
+@{
+    ViewData["Title"] = "Danh sách Course";
+}
+
+<h1>Danh sách Course</h1>
+
+<p>
+    <a asp-page="Create">Tạo mới</a>
+</p>
+<form method="get" asp-page="./Index">
+    <p>
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].course_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].course_Descrition)
+            </th>
+            
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Course)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.course_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.course_Descrition)
+            </td>
+            
+
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.course_Id">Sửa</a> |
+                <a asp-page="./Details" asp-route-id="@item.course_Id">Xem</a> |
+                <a asp-page="./Delete" asp-route-id="@item.course_Id">Xóa</a> |
+                <a asp-page="../Blog/ViewFindId"   asp-route-id="@item.course_Id" >List Events</a>
+                
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

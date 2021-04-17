@@ -95,6 +95,155 @@ namespace Album.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Album.Models.Article", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("courseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("courseId");
+
+                    b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Album.Models.Comment", b =>
+                {
+                    b.Property<int>("cmt_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("commentDeadline")
+                        .HasColumnType("int");
+
+                    b.Property<string>("comment_Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("comment_DateUpload")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("cmt_Id");
+
+                    b.HasIndex("commentDeadline");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Album.Models.Course", b =>
+                {
+                    b.Property<int>("course_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("course_Descrition")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("course_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("course_Id");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Album.Models.Deadline", b =>
+                {
+                    b.Property<int>("dl_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("dl_CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("dl_CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("dl_Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("dl_ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("dl_Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("dl_TimeDeadline")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("dl_Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("Deadlines");
+                });
+
+            modelBuilder.Entity("Album.Models.RegisterCourse", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("RegisterCourse");
+                });
+
+            modelBuilder.Entity("Album.Models.UserFile", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("file_CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("file_DateUpload")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("file_DeadlineId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("file_IsSelected")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("file_DeadlineId");
+
+                    b.ToTable("File");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -224,6 +373,57 @@ namespace Album.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("Album.Models.Article", b =>
+                {
+                    b.HasOne("Album.Models.Course", "course")
+                        .WithMany("Articles")
+                        .HasForeignKey("courseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.Comment", b =>
+                {
+                    b.HasOne("Album.Models.Deadline", "Deadline")
+                        .WithMany("Comment")
+                        .HasForeignKey("commentDeadline")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.Deadline", b =>
+                {
+                    b.HasOne("Album.Models.Article", "Article")
+                        .WithMany("Deadline")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.RegisterCourse", b =>
+                {
+                    b.HasOne("Album.Models.Course", "Course")
+                        .WithMany("RegisterCourse")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Album.Models.AppUser", "AppUser")
+                        .WithMany("RegisterCourse")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.UserFile", b =>
+                {
+                    b.HasOne("Album.Models.Deadline", "Deadline")
+                        .WithMany("UserFile")
+                        .HasForeignKey("file_DeadlineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

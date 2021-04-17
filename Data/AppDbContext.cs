@@ -1,4 +1,6 @@
+using Album.Configurations;
 using Album.Models;
+using FGW_Enterprise_Web.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,7 +35,24 @@ namespace Album.Data {
                     entityType.SetTableName (tableName.Substring (6));
                 }
             }
+            builder.ApplyConfiguration(new DeadlineConfigurations());
+            builder.ApplyConfiguration(new EventConfigurations());
+            builder.ApplyConfiguration(new CommentConfigurations());
+            builder.ApplyConfiguration(new FileConfigurations());
+            builder.ApplyConfiguration(new RegisterCourseConfigurations());
+
+
+
+
         }
+
+        public DbSet<Article> Article { set; get; }
+        public DbSet<Comment> Comments { set; get; }
+        public DbSet<Course> Courses { set; get; }
+        public DbSet<Deadline> Deadline { set; get; }
+        public DbSet<UserFile> userFiles { set; get; }
+        public DbSet<RegisterCourse> RegisterCourse { set; get; }
+
 
     }
 }

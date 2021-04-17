@@ -36,12 +36,10 @@ namespace Album.Data {
                 }
             }
             builder.ApplyConfiguration(new DeadlineConfigurations());
-            builder.ApplyConfiguration(new RegisterEventCourseConfigurations());
-            builder.ApplyConfiguration(new RegisterDeadlineConfigurations());
-            builder.ApplyConfiguration(new RegisterCommentConfigurations());
+            builder.ApplyConfiguration(new EventConfigurations());
+            builder.ApplyConfiguration(new CommentConfigurations());
             builder.ApplyConfiguration(new FileConfigurations());
             builder.ApplyConfiguration(new RegisterCourseConfigurations());
-            //builder.ApplyConfiguration(new ArticleConfigurations());
 
 
 
@@ -53,9 +51,6 @@ namespace Album.Data {
         public DbSet<Course> Courses { set; get; }
         public DbSet<Deadline> Deadline { set; get; }
         public DbSet<UserFile> userFiles { set; get; }
-        public DbSet<RegisterComment> RegisterComment { set; get; }
-        public DbSet<RegisterDeadline> RegisterDeadline { set; get; }
-        //public DbSet<RegisterEventCourse> RegisterEventCourse { set; get; }
         public DbSet<RegisterCourse> RegisterCourse { set; get; }
 
 

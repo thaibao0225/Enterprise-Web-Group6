@@ -12,7 +12,10 @@ namespace Album.Configurations
         public void Configure(EntityTypeBuilder<Deadline> builder)
         {
             builder.HasKey(t => new { t.dl_Id });
-            
+
+            builder.HasOne(t => t.Article).WithMany(ur => ur.Deadline)
+                .HasForeignKey(pc => pc.ArticleId);
+
         }
     }
 }

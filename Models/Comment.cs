@@ -14,12 +14,11 @@ namespace Album.Models
         public int cmt_Id { get; set; }
 
         public string comment_Content { get; set; }
-
-        public int comment_User { get; set; } //Id Users
-        public AppUser AppUser { get; set; }
-
         public DateTime comment_DateUpload { get; set; }
-        public List<RegisterComment> RegisterComment { get; set; }
+
+        public int commentDeadline { get; set; }
+        public Deadline Deadline { get; set; }
+        //public List<RegisterComment> RegisterComment { get; set; }
 
     }
 }

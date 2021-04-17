@@ -13,13 +13,23 @@ namespace Album.Areas.Admin.Pages.Deadlines
     {
         private readonly AppDbContext _context;
 
+        [BindProperty]
+        public List<Article> ArticleList { get; set; }
+
+        [BindProperty]
+        public string strSelectt { get; set; }
+
         public CreateModel(AppDbContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
-        {   
+        {
+            var course = _context.Article;
+
+            ArticleList = course.ToList();
+
             return Page();
         }
 
@@ -33,6 +43,17 @@ namespace Album.Areas.Admin.Pages.Deadlines
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+
+            var article = from a in _context.Article select a;
+
+            article = article.Where(q => q.Title.Contains(strSelectt));
+
+
+            foreach (var item in article.ToList())
+            {
+                Deadline.ArticleId = item.ID;
             }
 
             _context.Deadline.Add(Deadline);

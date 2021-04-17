@@ -22,11 +22,9 @@ namespace Album.Models
 
         [Display(Name = "Nội dung")]
         public string Content { set; get; }
-        public List<RegisterEventCourse> RegisterEventCourse { get; set; }
-        public List<RegisterDeadline> RegisterDeadline { get; set; }
-
-        
-
-
+       // public List<RegisterEventCourse> RegisterEventCourse { get; set; }
+        public List<Deadline> Deadline { get; set; }
+        public int courseId { get; set; }
+        public Course course { get; set; }
     }
 }

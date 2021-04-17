@@ -42,9 +42,14 @@ namespace Album.Models
         [Display(Name = "Ngày khởi tạo")]
         [DataType(DataType.Date)]
         public DateTime dl_CreateDate { set; get; }
-        public List<RegisterDeadline> RegisterDeadline { get; set; }
+
+        public int ArticleId { get; set; }
+        public Article Article { get; set; }
+
+
         public List<UserFile> UserFile { get; set; }
-        public List<RegisterComment> RegisterComment { get; set; }
+
+        public List<Comment> Comment { get; set; }
 
 
 

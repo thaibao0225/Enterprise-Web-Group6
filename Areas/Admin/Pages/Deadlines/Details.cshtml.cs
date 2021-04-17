@@ -31,6 +31,11 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         public List<UserFile> userFilesList { get; set; }
 
+        public List<Comment> userCommentList { get; set; }
+
+        [BindProperty]
+        public Comment cuurentComment { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -40,9 +45,17 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             Deadline = await _context.Deadline.FirstOrDefaultAsync(m => m.dl_Id == id);
 
+            //// Hien thi file
             var userFile = _context.userFiles;
 
             userFilesList = userFile.ToList();
+
+            ///// Hien thi Comment
+
+            //var userComment = _context.Comment;
+
+            //userCommentList = userComment.ToList();
+
 
             if (Deadline == null)
             {
@@ -59,6 +72,12 @@ namespace Album.Areas.Admin.Pages.Deadlines
         [Display(Name = "Chọn file upload")]
         [BindProperty]
         public IFormFile[] FileUploads { get; set; }
+
+
+
+
+
+
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (FileUploads != null)
@@ -78,16 +97,25 @@ namespace Album.Areas.Admin.Pages.Deadlines
                         file_DeadlineId = 1,
                         file_CreateBy = "Thai Bao"
                     };
-
                 }
 
                 _context.userFiles.Add(UserFile);
                 await _context.SaveChangesAsync();
             }
+
+            //if(cuurentComment != null)
+            //{
+            //    cuurentComment.comment_DateUpload = DateTime.Now;
+
+            //    _context.Comment.Add(cuurentComment);
+            //    await _context.SaveChangesAsync();
+            //}
+
+
+
             var userFile = _context.userFiles;
 
             userFilesList = userFile.ToList();
-
 
             if (id == null)
             {

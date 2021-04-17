@@ -15,7 +15,7 @@ namespace Album.Models
 
         public bool FileSelect { get; set; }
 
-        
+        public int DeadId { get; set; }
 
 
 

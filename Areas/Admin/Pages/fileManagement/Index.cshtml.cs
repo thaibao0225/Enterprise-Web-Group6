@@ -19,10 +19,13 @@ namespace Album.Areas.Admin.Pages.fileManagement
         private readonly AppDbContext _context;
 
         [BindProperty]
-        public List<UserFile> userFileList { get; set; }
+        public UserFile userFileList { get; set; }
 
-
+        [BindProperty]
         public List<FileManagement> FileManagementList { get; set; }
+
+        [BindProperty]
+        public bool checkboxaa { get; set; }
 
         public IndexModel (AppDbContext context)
         {
@@ -43,18 +46,43 @@ namespace Album.Areas.Admin.Pages.fileManagement
                    NameEvent= x.a.Title,
                    NameFile = x.cc.Title,
                    NameDeadline = x.b.Title,
-                   FileSelect = x.cc.file_IsSelected
+                   FileSelect = x.cc.file_IsSelected,
+                   DeadId = x.b.dl_Id
                }).ToListAsync();
             FileManagementList = data.ToList();
+
+            checkboxaa = false;
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync() 
+        public async Task<IActionResult> OnPostAsync()
         {
 
-            
 
+            foreach (var item in FileManagementList)
+            {
+                UserFile userFile = _context.userFiles.Single(a => a.file_DeadlineId == item.DeadId && a.Title == item.NameFile);
+                //Field which will be update  
+                userFile.file_IsSelected = item.FileSelect;
+                // executes the appropriate commands to implement the changes to the database  
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
+            };
+
+            bool haha = checkboxaa;
+
+            if (haha)
+            {
+
+            }
 
             // Print
             var userFileQuery = from a in _context.userFiles select a;
@@ -70,7 +98,8 @@ namespace Album.Areas.Admin.Pages.fileManagement
                    NameEvent = x.a.Title,
                    NameFile = x.cc.Title,
                    NameDeadline = x.b.Title,
-                   FileSelect = x.cc.file_IsSelected
+                   FileSelect = x.cc.file_IsSelected,
+                   DeadId = x.b.dl_Id
                }).ToListAsync();
             FileManagementList = data.ToList();
 

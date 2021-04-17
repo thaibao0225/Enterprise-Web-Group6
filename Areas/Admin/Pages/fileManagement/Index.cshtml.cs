@@ -21,6 +21,9 @@ namespace Album.Areas.Admin.Pages.fileManagement
         [BindProperty]
         public List<UserFile> userFileList { get; set; }
 
+
+        public List<FileManagement> FileManagementList { get; set; }
+
         public IndexModel (AppDbContext context)
         {
             _context = context;
@@ -29,8 +32,20 @@ namespace Album.Areas.Admin.Pages.fileManagement
         {
             var userFileQuery = from a in _context.userFiles select a;
 
-            userFileList = userFileQuery.ToList();
+            var query = from a in _context.Article
+                        join b in _context.Deadline on a.ID equals b.ArticleId
+                        join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                        select new { a, b, cc };
 
+            var data = await query
+               .Select(x => new FileManagement()
+               {
+                   NameEvent= x.a.Title,
+                   NameFile = x.cc.Title,
+                   NameDeadline = x.b.Title,
+                   FileSelect = x.cc.file_IsSelected
+               }).ToListAsync();
+            FileManagementList = data.ToList();
 
             return Page();
         }
@@ -38,8 +53,29 @@ namespace Album.Areas.Admin.Pages.fileManagement
         public async Task<IActionResult> OnPostAsync() 
         {
 
+            
+
+
+            // Print
+            var userFileQuery = from a in _context.userFiles select a;
+
+            var query = from a in _context.Article
+                        join b in _context.Deadline on a.ID equals b.ArticleId
+                        join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                        select new { a, b, cc };
+
+            var data = await query
+               .Select(x => new FileManagement()
+               {
+                   NameEvent = x.a.Title,
+                   NameFile = x.cc.Title,
+                   NameDeadline = x.b.Title,
+                   FileSelect = x.cc.file_IsSelected
+               }).ToListAsync();
+            FileManagementList = data.ToList();
 
             return Page();
+            // Print 
         }
     }
 }

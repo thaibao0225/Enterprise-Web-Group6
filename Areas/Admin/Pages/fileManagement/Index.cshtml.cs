@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Album.Areas.Admin.Pages.fileManagement
 {
@@ -27,9 +28,18 @@ namespace Album.Areas.Admin.Pages.fileManagement
         [BindProperty]
         public bool checkboxaa { get; set; }
 
+        [BindProperty]
+        public bool checkboxbb { get; set; }
+
+        [BindProperty]
+        public string haha { get; set; }
+
+        public UserFile userFile { get; set; }
+
         public IndexModel (AppDbContext context)
         {
             _context = context;
+            
         }
         public async Task<IActionResult> OnGet()
         {
@@ -47,11 +57,13 @@ namespace Album.Areas.Admin.Pages.fileManagement
                    NameFile = x.cc.Title,
                    NameDeadline = x.b.Title,
                    FileSelect = x.cc.file_IsSelected,
+                   FileId = x.cc.ID,
+
                    DeadId = x.b.dl_Id
                }).ToListAsync();
             FileManagementList = data.ToList();
 
-            checkboxaa = false;
+            
 
             return Page();
         }
@@ -60,33 +72,35 @@ namespace Album.Areas.Admin.Pages.fileManagement
         {
 
 
-            foreach (var item in FileManagementList)
-            {
-                UserFile userFile = _context.userFiles.Single(a => a.file_DeadlineId == item.DeadId && a.Title == item.NameFile);
-                //Field which will be update  
-                userFile.file_IsSelected = item.FileSelect;
-                // executes the appropriate commands to implement the changes to the database  
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-
-                }
-            };
-
-            bool haha = checkboxaa;
-
-            if (haha)
+            if (checkboxaa)
             {
 
             }
 
-            // Print
-            var userFileQuery = from a in _context.userFiles select a;
 
+                // Print
+
+   
+
+            var userFileQuery = from aa in _context.userFiles select aa;
+
+            for (int i = 0; i < FileManagementList.Count; i++)
+            {
+                var fileNameTraVe = FileManagementList[i].FileId;
+                var buserFile = userFileQuery.Where(a => a.Title.Contains(FileManagementList[i].FileId.ToString()));
+
+                if (buserFile == null)
+                {
+                    return BadRequest("false");
+                }
+                //      userFile = (DbSet<UserFile>)userFile.Where(a => a.Title == "1690-TaThaiBao-GCS18186-Assignmentbrief2.pdf");
+                var files = await _context.userFiles.FindAsync(fileNameTraVe);
+                files.ID = fileNameTraVe;
+                bool aaa = FileManagementList[i].FileSelect;
+                files.file_IsSelected = aaa;
+                _context.Update(files);
+            }
+            await _context.SaveChangesAsync();
             var query = from a in _context.Article
                         join b in _context.Deadline on a.ID equals b.ArticleId
                         join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
@@ -99,10 +113,9 @@ namespace Album.Areas.Admin.Pages.fileManagement
                    NameFile = x.cc.Title,
                    NameDeadline = x.b.Title,
                    FileSelect = x.cc.file_IsSelected,
-                   DeadId = x.b.dl_Id
+                   FileId = x.cc.ID
                }).ToListAsync();
             FileManagementList = data.ToList();
-
             return Page();
             // Print 
         }

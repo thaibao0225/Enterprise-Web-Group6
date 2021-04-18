@@ -10,6 +10,8 @@ namespace Album.Models
         public string NameEvent { get; set; }
 
         public string NameFile { get; set; }
+        public int FileId { get; set; }
+
 
         public string NameDeadline { get; set; }
 

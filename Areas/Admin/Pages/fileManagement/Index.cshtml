@@ -12,71 +12,100 @@
     </p>
 </form>
 
+<form method="post" asp-page="./Index">
+    <p>
+        <input type="checkbox" asp-for="@Model.checkboxaa" checked="@Model.checkboxaa">
+        <label asp-for="checkboxaa"></label><br>
+        <input type="submit" value="check" />
+    </p>
+</form>
 
-<table class="table">
-    <form method="post">
-        <thead>
-            <tr>
-                <th>
-                    <div>
-                        <label>Event</label>
-                    </div>
-                    
-                </th>
-                <th>
-                    <div>
-                        <label>Deadline</label>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <label>File</label>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <label>Select</label>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <input type="checkbox" name="vehicle1" asp-for="@Model.checkboxaa" checked=@Model.checkboxaa>
-                        <label asp-for="checkboxaa"></label><br>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        @*<tbody>
-            @{
-                foreach (var item in Model.FileManagementList)
-                {
-                    <tr>
-                        <td >
-                            <label asp-for="@item.NameEvent"></label>
-                            <input asp-for="@item.NameEvent" value="@item.NameEvent" hidden/>
-                        </td>
-                        <td >
-                            <label asp-for="@item.NameDeadline"></label>
-                            <input asp-for="@item.NameDeadline" value="@item.NameDeadline" hidden />
-                        </td>
-                        <td >
+<form method="post" asp-page="./index">
+    <table class="table">
+        <tr>
+            <th>
+                <div>
+                    <label>Event</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <label>Deadline</label>
+                </div>
+            </th>
+            <th>
+                <div typeof="hidden">
+                    <label>File ID</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <label>File</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                </div>
+            </th>
+        </tr>
+        @{
+            @*foreach (var item in Model.FileManagementList)
+            {
+                <tr>
+                    <td>
+                        <label asp-for="@item.NameEvent"></label>
+                        <input asp-for="@item.NameEvent" value="@item.NameEvent" hidden />
+                    </td>
+                    <td>
+                        <label asp-for="@item.NameDeadline"></label>
+                        <input asp-for="@item.NameDeadline" value="@item.NameDeadline" hidden />
+                    </td>
+                    <td>
 
-                            <label asp-for="@item.NameFile"><a href="#">@item.NameFile</a></label>
-                            <input asp-for="@item.NameFile" value="@item.NameDeadline" hidden />
-                        </td>
-                        <td asp-for="@item.FileSelect">
-                            <input type="checkbox" name="vehicle1"  checked=@item.FileSelect asp-for="checkboxaa">
-                            <label asp-for="@item.FileSelect" ></label><br>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                }
+                        <label asp-for="@item.FileId"><a href="#">@item.FileId</a></label>
+                        <input asp-for="@item.FileId" value="@item.FileId" hidden />
+                    </td>
+                    <td>
+
+                        <label asp-for="@item"><a href="#">@item.NameFile</a></label>
+                        <input asp-for="@item.NameFile" value="@item.NameDeadline" hidden />
+                    </td>
+                    <td>
+                        <input type="checkbox" checked=@item.FileSelect asp-for="@item.FileSelect">
+                        <label asp-for="@item.FileSelect"></label><br>
+                    </td>
+                </tr>
+            }*@
+            for (int i = 0; i < Model.FileManagementList.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <label asp-for="@Model.FileManagementList[i].NameEvent"></label>
+                        <input asp-for="@Model.FileManagementList[i].NameEvent" value="@Model.FileManagementList[i].NameEvent" hidden />
+                    </td>
+                    <td>
+                        <label asp-for="@Model.FileManagementList[i].NameDeadline"></label>
+                        <input asp-for="@Model.FileManagementList[i].NameDeadline" value="@Model.FileManagementList[i].NameDeadline" hidden />
+                    </td>
+                    <td>
+
+                        <label asp-for="@Model.FileManagementList[i].FileId"><a href="#">@Model.FileManagementList[i].FileId</a></label>
+                        <input asp-for="@Model.FileManagementList[i].FileId" value="@Model.FileManagementList[i].FileId" hidden />
+                    </td>
+                    <td>
+
+                        <label asp-for="@Model.FileManagementList[i]"><a href="#">@Model.FileManagementList[i].NameFile</a></label>
+                        <input asp-for="@Model.FileManagementList[i].NameFile" value="@Model.FileManagementList[i].NameDeadline" hidden />
+                    </td>
+                    <td>
+                        <input type="checkbox" checked=@Model.FileManagementList[i].FileSelect asp-for="@Model.FileManagementList[i].FileSelect">
+                        <label asp-for="@Model.FileManagementList[i].FileSelect"></label><br>
+                    </td>
+                </tr>
             }
-        </tbody>*@
+        }
 
-        <input type="submit" value="Save" asp-page="./index"  class="btn btn-primary"/>
-        @*<input type="reset" value="Reset"/>*@
-    </form>
-</table>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
     

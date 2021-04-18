@@ -20,6 +20,14 @@
     </p>
 </form>
 
+<form method="post" asp-page="./SortAndDownFile">
+    <p>
+        <input type="checkbox" asp-for="@Model.sort" checked="@Model.sort">
+        <label asp-for="sort"></label><br>
+        <input type="submit" value="Sort Select" />
+    </p>
+</form>
+
 <form method="post" asp-page="./index">
     <table class="table">
         <tr>
@@ -49,33 +57,6 @@
             </th>
         </tr>
         @{
-            @*foreach (var item in Model.FileManagementList)
-            {
-                <tr>
-                    <td>
-                        <label asp-for="@item.NameEvent"></label>
-                        <input asp-for="@item.NameEvent" value="@item.NameEvent" hidden />
-                    </td>
-                    <td>
-                        <label asp-for="@item.NameDeadline"></label>
-                        <input asp-for="@item.NameDeadline" value="@item.NameDeadline" hidden />
-                    </td>
-                    <td>
-
-                        <label asp-for="@item.FileId"><a href="#">@item.FileId</a></label>
-                        <input asp-for="@item.FileId" value="@item.FileId" hidden />
-                    </td>
-                    <td>
-
-                        <label asp-for="@item"><a href="#">@item.NameFile</a></label>
-                        <input asp-for="@item.NameFile" value="@item.NameDeadline" hidden />
-                    </td>
-                    <td>
-                        <input type="checkbox" checked=@item.FileSelect asp-for="@item.FileSelect">
-                        <label asp-for="@item.FileSelect"></label><br>
-                    </td>
-                </tr>
-            }*@
             for (int i = 0; i < Model.FileManagementList.Count; i++)
             {
                 <tr>
@@ -104,6 +85,7 @@
                 </tr>
             }
         }
+        
 
     </table>
     <input type="submit" value="Save" class="btn btn-primary" />

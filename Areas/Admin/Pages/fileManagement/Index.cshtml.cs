@@ -36,6 +36,9 @@ namespace Album.Areas.Admin.Pages.fileManagement
 
         public UserFile userFile { get; set; }
 
+        [BindProperty]
+        public bool sort { get; set; }
+
         public IndexModel (AppDbContext context)
         {
             _context = context;
@@ -101,21 +104,46 @@ namespace Album.Areas.Admin.Pages.fileManagement
                 _context.Update(files);
             }
             await _context.SaveChangesAsync();
-            var query = from a in _context.Article
-                        join b in _context.Deadline on a.ID equals b.ArticleId
-                        join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
-                        select new { a, b, cc };
 
-            var data = await query
-               .Select(x => new FileManagement()
-               {
-                   NameEvent = x.a.Title,
-                   NameFile = x.cc.Title,
-                   NameDeadline = x.b.Title,
-                   FileSelect = x.cc.file_IsSelected,
-                   FileId = x.cc.ID
-               }).ToListAsync();
-            FileManagementList = data.ToList();
+
+            if (sort)
+            {
+                var query = from a in _context.Article
+                            join b in _context.Deadline on a.ID equals b.ArticleId
+                            join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                            select new { a, b, cc };
+
+                var data = await query
+                   .Select(x => new FileManagement()
+                   {
+                       NameEvent = x.a.Title,
+                       NameFile = x.cc.Title,
+                       NameDeadline = x.b.Title,
+                       FileSelect = x.cc.file_IsSelected,
+                       FileId = x.cc.ID
+                   }).ToListAsync();
+                var buserFileSort = data.Where(a => a.FileSelect == true);
+
+                FileManagementList = buserFileSort.ToList();
+            }
+            else
+            {
+                var query = from a in _context.Article
+                            join b in _context.Deadline on a.ID equals b.ArticleId
+                            join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                            select new { a, b, cc };
+
+                var data = await query
+                   .Select(x => new FileManagement()
+                   {
+                       NameEvent = x.a.Title,
+                       NameFile = x.cc.Title,
+                       NameDeadline = x.b.Title,
+                       FileSelect = x.cc.file_IsSelected,
+                       FileId = x.cc.ID
+                   }).ToListAsync();
+                FileManagementList = data.ToList();
+            }
             return Page();
             // Print 
         }

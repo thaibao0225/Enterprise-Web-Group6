@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Album.Services;
+using System.IO.Compression;
 
 namespace Album.Areas.Admin.Pages.fileManagement
 {
@@ -21,6 +23,8 @@ namespace Album.Areas.Admin.Pages.fileManagement
 
         [BindProperty]
         public UserFile userFileList { get; set; }
+
+        private IHostingEnvironment _environment;
 
         [BindProperty]
         public List<FileManagement> FileManagementList { get; set; }
@@ -32,17 +36,21 @@ namespace Album.Areas.Admin.Pages.fileManagement
         public bool checkboxbb { get; set; }
 
         [BindProperty]
-        public string haha { get; set; }
+        public bool down { get; set; }
 
         public UserFile userFile { get; set; }
 
         [BindProperty]
         public bool sort { get; set; }
 
-        public IndexModel (AppDbContext context)
+
+        private readonly IFileService _fileService;
+
+        public IndexModel(AppDbContext context, IFileService fileService, IHostingEnvironment environment)
         {
             _context = context;
-            
+            _fileService = fileService;
+            _environment = environment;
         }
         public async Task<IActionResult> OnGet()
         {
@@ -56,7 +64,7 @@ namespace Album.Areas.Admin.Pages.fileManagement
             var data = await query
                .Select(x => new FileManagement()
                {
-                   NameEvent= x.a.Title,
+                   NameEvent = x.a.Title,
                    NameFile = x.cc.Title,
                    NameDeadline = x.b.Title,
                    FileSelect = x.cc.file_IsSelected,
@@ -66,24 +74,17 @@ namespace Album.Areas.Admin.Pages.fileManagement
                }).ToListAsync();
             FileManagementList = data.ToList();
 
-            
+            //if (down)
+            //{
+            //    await DownloadFilesAsync();
+            //}
+
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-
-
-            if (checkboxaa)
-            {
-
-            }
-
-
-                // Print
-
-   
 
             var userFileQuery = from aa in _context.userFiles select aa;
 
@@ -106,6 +107,13 @@ namespace Album.Areas.Admin.Pages.fileManagement
             await _context.SaveChangesAsync();
 
 
+
+            if (down)
+            {
+                await DownloadFilesAsync();
+            }
+
+            //Print
             if (sort)
             {
                 var query = from a in _context.Article
@@ -146,6 +154,54 @@ namespace Album.Areas.Admin.Pages.fileManagement
             }
             return Page();
             // Print 
+        }
+
+
+        //public IActionResult Download([Required] string subDirectory = "aaa")
+        //{
+
+        //    try
+        //    {
+        //        var (fileType, archiveData, archiveName) = DownloadFilesAsync(subDirectory);
+
+        //        return File(archiveData, fileType, archiveName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
+
+        public async Task DownloadFilesAsync(string subDirectory = "aaa")
+        {
+            var zipName = $"archive-{DateTime.Now.ToString("yyyy_MM_dd-HH_mm_ss")}.zip";
+
+            var files = Directory.GetFiles(Path.Combine(_environment.ContentRootPath, subDirectory)).ToList();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+
+                    foreach (var botFilePath in files)
+                    {
+                        var botFileName = Path.GetFileName(botFilePath);
+                        var entry = archive.CreateEntry(botFileName);
+                        using (var entryStream = entry.Open())
+                        using (var fileStream = System.IO.File.OpenRead(botFilePath))
+                        {
+                            await fileStream.CopyToAsync(entryStream);
+                        }
+
+                    }
+
+
+                }
+
+            }
+
         }
     }
 }

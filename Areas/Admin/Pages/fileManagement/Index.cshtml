@@ -20,11 +20,17 @@
     </p>
 </form>
 
-<form method="post" asp-page="./SortAndDownFile">
+<form method="post" asp-page="./Index">
     <p>
         <input type="checkbox" asp-for="@Model.sort" checked="@Model.sort">
         <label asp-for="sort"></label><br>
         <input type="submit" value="Sort Select" />
+    </p>
+</form>
+
+<form method="get" asp-page="./DownFile"  >
+    <p>
+        <input type="submit" value="Sort Select New" />
     </p>
 </form>
 

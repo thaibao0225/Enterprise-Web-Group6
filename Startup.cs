@@ -6,6 +6,7 @@ using Album.Data;
 using Album.Identity;
 using Album.Mail;
 using Album.Models;
+using Album.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -151,7 +152,7 @@ namespace Album {
             services.AddTransient<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddTransient<IAuthorizationHandler, CanUpdatePostAgeHandler>();
 
-
+            services.AddTransient<IFileService, FileService>();
 
             services.AddRazorPages ();
 
@@ -177,6 +178,8 @@ namespace Album {
             app.UseAuthorization (); // Phục hồi thông tinn về quyền của User
 
             app.UseEndpoints (endpoints => {
+
+
                 endpoints.MapRazorPages ();
             });
         }

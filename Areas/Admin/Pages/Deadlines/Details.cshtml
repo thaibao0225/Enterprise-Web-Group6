@@ -44,7 +44,7 @@
                 foreach (var item in Model.userFilesList)
                 {
                     <div>
-                        <img src="https://cms.greenwich.edu.vn/theme/image.php/adaptable/core/1596790129/f/pdf" alt="pdf" />
+                        <img src="##" alt="pdf" />
                         <a href="#">@item.Title</a>
                     </div>
                 }
@@ -52,7 +52,7 @@
         </div>
         <div>
             <br />
-            @Html.ValidationMessageFor(m => m.FileUploads, "", new { @class = "error" })
+            <label>@Model.mess</label>
             <br />
             <input type="checkbox" asp-for="agreeSubmit" />
             <br />
@@ -60,7 +60,7 @@
         </div>
         <div>
             @*asp-page="Details"*@
-            <button class="btn btn-danger" asp-page-handler="OnPostUpload">Upload</button>
+            <button class="btn btn-danger">Upload</button>
         </div>
 
         

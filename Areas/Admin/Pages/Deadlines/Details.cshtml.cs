@@ -47,6 +47,12 @@ namespace Album.Areas.Admin.Pages.Deadlines
         [BindProperty]
         public bool agreeSubmit { get; set; }
 
+        [EmailAddress]
+        string Email { get; set; }
+
+        [BindProperty]
+        public string mess { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -69,6 +75,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             userCommentList = userComment.ToList();
 
+            mess = "";
 
             if (Deadline == null)
             {
@@ -81,7 +88,6 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         [Required(ErrorMessage = "Chọn một file")]
         [DataType(DataType.Upload)]
-        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.doc|.docx|.pdf)$", ErrorMessage = "Only .pdf files allowed.")]
         [Display(Name = "Chọn file upload")]
         [BindProperty]
         public IFormFile[] FileUploads { get; set; }
@@ -93,23 +99,37 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            var queryEmail = from aDL in _context.Deadline 
+                             join aEV in _context.Article on aDL.ArticleId equals aEV.ID
+                             join aC in _context.Courses on aEV.courseId equals aC.course_Id 
+                             join aRC in _context.RegisterCourse on aC.course_Id equals aRC.CourseId 
+                             join aU in _context.Users on aRC.UserId equals aU.Id
+                             select new { aDL, aEV, aC, aRC, aU };
+            
+
+            foreach (var item in queryEmail)
+            {
+                Email = item.aU.Email;
+            }
+
             if (agreeSubmit)
             {
-                //await _emailSender.SendEmailAsync("MAIL@gmail.com", "You was submited", "Submited");
+                
 
-                if (FileUploads != null)
+                if (FileUploads != null) 
                 {
-                    var supportedTypes = new[] { "txt", "doc", "docx", "pdf", "xls", "xlsx" };
+                    string supportedTypes = ".pdf";
+                    
                     foreach (var FileUpload in FileUploads)
                     {
-                        //var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
-                        //if (!supportedTypes.Contains(fileExt))
-                        //{
-                        //    ErrorMessage = "File Extension Is InValid - Only Upload WORD/PDF/EXCEL/TXT File";
-                        //    return ErrorMessage;
-                        //}
-                        if(supportedTypes.Contains(FileUpload.FileName))
+                        
+                        string[] arrListStr = FileUpload.FileName.Split('.');
+                        if (supportedTypes.Contains(arrListStr[1]))
                         {
+                            string mess = "You was submited" + FileUpload.FileName;
+
+                            await _emailSender.SendEmailAsync("thaibao0225@gmail.com", mess, "Submited");
+
                             var file = Path.Combine(_environment.ContentRootPath, "uploads", FileUpload.FileName);
                             using (var fileStream = new FileStream(file, FileMode.Create))
                             {
@@ -125,6 +145,12 @@ namespace Album.Areas.Admin.Pages.Deadlines
                             };
                             _context.userFiles.Add(UserFile);
                             await _context.SaveChangesAsync();
+
+                            mess = "";
+                        }
+                        else
+                        {
+                            mess = "Only .pdf";
                         }
                         
                     }
@@ -156,9 +182,6 @@ namespace Album.Areas.Admin.Pages.Deadlines
             var userFile = _context.userFiles.Where(a => a.file_DeadlineId == id);
 
             userFilesList = userFile.ToList();
-
-
-            //var userComment = from a in _context.Comments select a;
 
             var userComment = _context.Comments.Where(a => a.commentDeadline == id);
 

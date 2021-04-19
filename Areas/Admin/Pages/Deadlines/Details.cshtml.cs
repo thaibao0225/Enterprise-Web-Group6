@@ -11,18 +11,22 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Album.Mail;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Album.Areas.Admin.Pages.Deadlines
 {
     public class DetailsModel : PageModel
     {
         private readonly AppDbContext _context;
+        private readonly IEmailSender _emailSender;
         private IHostingEnvironment _environment;
 
-        public DetailsModel(AppDbContext context, IHostingEnvironment environment)
+        public DetailsModel(AppDbContext context, IHostingEnvironment environment, IEmailSender emailSender)
         {
             _context = context;
             _environment = environment;
+            _emailSender = emailSender;
         }
 
         public Deadline Deadline { get; set; }
@@ -39,6 +43,9 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         [BindProperty]
         public string cmtContext { get; set; }
+
+        [BindProperty]
+        public bool agreeSubmit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -80,12 +87,16 @@ namespace Album.Areas.Admin.Pages.Deadlines
         public IFormFile[] FileUploads { get; set; }
 
 
-
+        
 
 
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            if (agreeSubmit)
+            {
+                await _emailSender.SendEmailAsync("MAIL@gmail.com", "You was submited", "Submited");
+            }
             if (FileUploads != null)
             {
                 foreach (var FileUpload in FileUploads)
@@ -127,6 +138,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
             }
 
 
+            
 
             var userFile = _context.userFiles;
 
@@ -150,5 +162,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
             }
             return Page();
         }
+
+        
     }
 }

@@ -31,6 +31,21 @@
         </dd>
     </dl>
 </div>
+
+
+<div>
+    @{
+        foreach (var item in Model.DeadlineList)
+        {
+        <div>
+            <hr />
+            <a href="/xem-thoi-han/@item.dl_Id"><h3>@item.Title</h3></a>
+            <p>Time: @item.dl_TimeDeadline</p>
+        </div>
+        }
+    }
+
+</div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Article.ID">Edit</a> |
     <a asp-page="./Index">Back to List</a>

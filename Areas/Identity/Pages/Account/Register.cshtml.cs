@@ -72,6 +72,13 @@ namespace Album.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name="Tên tài khoản (viết liền - không dấu)")]
             public string UserName {set; get;}
+
+
+            [Required]
+            [StringLength(100, ErrorMessage = "Khong Dau", MinimumLength = 3)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Tên người dùng(không dấu)")]
+            public string FulllName { set; get; }
         }
 
         // Đăng ký tài khoản theo dữ liệu form post tới
@@ -88,7 +95,7 @@ namespace Album.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // Tạo AppUser sau đó tạo User mới (cập nhật vào db)
-                var user = new AppUser { UserName = Input.UserName, Email = Input.Email };
+                var user = new AppUser { UserName = Input.UserName, Email = Input.Email, FullName = Input.FulllName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

@@ -1,7 +1,7 @@
 ﻿@page "/file-management/"
 @model Album.Areas.Admin.Pages.fileManagement.IndexModel
 @{
-    ViewData["Title"] = "Danh sách File";
+    ViewData["Title"] = "File List";
 }
 <h1>Danh sách File</h1>
 
@@ -81,7 +81,7 @@
                     </td>
                     <td>
 
-                        <label asp-for="@Model.FileManagementList[i]"><a href="#">@Model.FileManagementList[i].NameFile</a></label>
+                        <label asp-for="@Model.FileManagementList[i]"><a href="/openpdf/@Model.FileManagementList[i].NameFile">@Model.FileManagementList[i].NameFile</a></label>
                         <input asp-for="@Model.FileManagementList[i].NameFile" value="@Model.FileManagementList[i].NameDeadline" hidden />
                     </td>
                     <td>

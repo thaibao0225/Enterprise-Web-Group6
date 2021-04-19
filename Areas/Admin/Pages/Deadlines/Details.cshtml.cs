@@ -89,9 +89,9 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
 
 
-        [Required(ErrorMessage = "Chọn một file")]
+        [Required(ErrorMessage = "Select a file")]
         [DataType(DataType.Upload)]
-        [Display(Name = "Chọn file upload")]
+        [Display(Name = "Select the file to upload")]
         [BindProperty]
         public IFormFile[] FileUploads { get; set; }
 
@@ -157,15 +157,10 @@ namespace Album.Areas.Admin.Pages.Deadlines
                         {
                             mess = "Only .pdf";
                         }
-                        
                     }
-
-
                 }
             }
             
-
-
             // phan comment
             if (cmtContext != null)
             {

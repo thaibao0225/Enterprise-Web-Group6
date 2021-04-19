@@ -130,7 +130,9 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
                             await _emailSender.SendEmailAsync("thaibao0225@gmail.com", mess, "Submited");
 
-                            var file = Path.Combine(_environment.ContentRootPath, "uploads", FileUpload.FileName);
+                            string path = "wwwroot\\uploads";
+
+                            var file = Path.Combine(_environment.ContentRootPath, path, FileUpload.FileName);
                             using (var fileStream = new FileStream(file, FileMode.Create))
                             {
                                 await FileUpload.CopyToAsync(fileStream);

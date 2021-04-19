@@ -74,11 +74,6 @@ namespace Album.Areas.Admin.Pages.fileManagement
                }).ToListAsync();
             FileManagementList = data.ToList();
 
-            //if (down)
-            //{
-            //    await DownloadFilesAsync();
-            //}
-
 
             return Page();
         }
@@ -97,7 +92,6 @@ namespace Album.Areas.Admin.Pages.fileManagement
                 {
                     return BadRequest("false");
                 }
-                //      userFile = (DbSet<UserFile>)userFile.Where(a => a.Title == "1690-TaThaiBao-GCS18186-Assignmentbrief2.pdf");
                 var files = await _context.userFiles.FindAsync(fileNameTraVe);
                 files.ID = fileNameTraVe;
                 bool aaa = FileManagementList[i].FileSelect;
@@ -156,22 +150,6 @@ namespace Album.Areas.Admin.Pages.fileManagement
             // Print 
         }
 
-
-        //public IActionResult Download([Required] string subDirectory = "aaa")
-        //{
-
-        //    try
-        //    {
-        //        var (fileType, archiveData, archiveName) = DownloadFilesAsync(subDirectory);
-
-        //        return File(archiveData, fileType, archiveName);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
 
 
         public async Task DownloadFilesAsync(string subDirectory = "aaa")

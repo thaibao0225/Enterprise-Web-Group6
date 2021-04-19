@@ -28,11 +28,10 @@ namespace Album.Areas.Admin.Pages.fileManagement
             
             Response.ContentType = "application/octet-stream";
             Response.Headers.Add("Content-Disposition", "attachment; filename=\"Bo555s.zip\"");
-            string NameFile = "uploads";
+            string NameFile = "wwwroot\\uploads";
 
             var query = _context.userFiles.Where(a => a.file_IsSelected == true);
 
-            string NameFile1 = "1690-TaThaiBao-GCS18186-Assignment-brief1.pdf";
 
             var files = Directory.GetFiles(Path.Combine(_environment.ContentRootPath, NameFile)).ToList();
 

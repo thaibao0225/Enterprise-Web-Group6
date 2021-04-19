@@ -1,0 +1,18 @@
+﻿@page "/openpdf"
+@model Album.Areas.Admin.Pages.fileManagement.OpenFilePdfModel
+@{
+}
+
+<style>
+    .haah {
+        padding: 30px;
+    }
+</style>
+
+
+
+@{
+    <div class=".haah">
+        <embed src="~/uploads/@Model.NameFile#toolbar=0"width="100%" height="600px"></embed>
+    </div>
+}

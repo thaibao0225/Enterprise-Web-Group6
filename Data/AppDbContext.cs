@@ -52,6 +52,7 @@ namespace Album.Data {
         public DbSet<Deadline> Deadline { set; get; }
         public DbSet<UserFile> userFiles { set; get; }
         public DbSet<RegisterCourse> RegisterCourse { set; get; }
+        public DbSet<GradeManagemen> gradeManagemens { set; get; }
 
 
     }

@@ -37,21 +37,33 @@
 </div>
 <div>
     <form method="post" enctype="multipart/form-data">
-        @*<label asp-for="@Model.FileUploads"></label>*@
-        <input asp-for="@Model.FileUploads" />
-        <br />
-
-        @{ 
-            foreach (var item in Model.userFilesList)
-            {
-                <div>
-                    <img src="https://cms.greenwich.edu.vn/theme/image.php/adaptable/core/1596790129/f/pdf" alt="pdf" />
-                    <a href="#">@item.Title</a>
-                </div>
+        <div>
+            <input asp-for="@Model.FileUploads" />
+            <br />
+            @{
+                foreach (var item in Model.userFilesList)
+                {
+                    <div>
+                        <img src="https://cms.greenwich.edu.vn/theme/image.php/adaptable/core/1596790129/f/pdf" alt="pdf" />
+                        <a href="#">@item.Title</a>
+                    </div>
+                }
             }
-        }
-    <input type="checkbox" asp-for="agreeSubmit" value="Agree to Submit" />
-        <button class="btn btn-danger"  asp-page="Details" >Upload</button>
+        </div>
+        <div>
+            <br />
+            @Html.ValidationMessageFor(m => m.FileUploads, "", new { @class = "error" })
+            <br />
+            <input type="checkbox" asp-for="agreeSubmit" />
+            <br />
+            <label>Agree to Submit</label>
+        </div>
+        <div>
+            @*asp-page="Details"*@
+            <button class="btn btn-danger" asp-page-handler="OnPostUpload">Upload</button>
+        </div>
+
+        
     </form>
 </div>
 <hr />

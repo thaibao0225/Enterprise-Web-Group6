@@ -57,7 +57,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
             Deadline = await _context.Deadline.FirstOrDefaultAsync(m => m.dl_Id == id);
 
             //// Hien thi file
-            var userFile = _context.userFiles;
+            var userFile = _context.userFiles.Where(a => a.file_DeadlineId == id);
 
             userFilesList = userFile.ToList();
 
@@ -65,7 +65,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
             /// var article = from a in _context.Article select a; 
 
 
-            var userComment = from a in _context.Comments select a;
+            var userComment = _context.Comments.Where(a => a.commentDeadline == id);
 
             userCommentList = userComment.ToList();
 
@@ -81,7 +81,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
         [Required(ErrorMessage = "Chọn một file")]
         [DataType(DataType.Upload)]
-        [FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.doc|.docx|.pdf)$", ErrorMessage = "Only .pdf files allowed.")]
         [Display(Name = "Chọn file upload")]
         [BindProperty]
         public IFormFile[] FileUploads { get; set; }
@@ -95,31 +95,44 @@ namespace Album.Areas.Admin.Pages.Deadlines
         {
             if (agreeSubmit)
             {
-                await _emailSender.SendEmailAsync("MAIL@gmail.com", "You was submited", "Submited");
-            }
-            if (FileUploads != null)
-            {
-                foreach (var FileUpload in FileUploads)
+                //await _emailSender.SendEmailAsync("MAIL@gmail.com", "You was submited", "Submited");
+
+                if (FileUploads != null)
                 {
-                    var file = Path.Combine(_environment.ContentRootPath, "uploads", FileUpload.FileName);
-                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    var supportedTypes = new[] { "txt", "doc", "docx", "pdf", "xls", "xlsx" };
+                    foreach (var FileUpload in FileUploads)
                     {
-                        await FileUpload.CopyToAsync(fileStream);
+                        //var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+                        //if (!supportedTypes.Contains(fileExt))
+                        //{
+                        //    ErrorMessage = "File Extension Is InValid - Only Upload WORD/PDF/EXCEL/TXT File";
+                        //    return ErrorMessage;
+                        //}
+                        if(supportedTypes.Contains(FileUpload.FileName))
+                        {
+                            var file = Path.Combine(_environment.ContentRootPath, "uploads", FileUpload.FileName);
+                            using (var fileStream = new FileStream(file, FileMode.Create))
+                            {
+                                await FileUpload.CopyToAsync(fileStream);
+                            }
+
+                            UserFile = new UserFile()
+                            {
+                                Title = FileUpload.FileName,
+                                file_IsSelected = false,
+                                file_DeadlineId = id,
+                                file_CreateBy = "Thai Bao"
+                            };
+                            _context.userFiles.Add(UserFile);
+                            await _context.SaveChangesAsync();
+                        }
+                        
                     }
 
-                    UserFile = new UserFile()
-                    {
-                        Title = FileUpload.FileName,
-                        file_IsSelected = false,
-                        file_DeadlineId = id,
-                        file_CreateBy = "Thai Bao"
-                    };
-                    _context.userFiles.Add(UserFile);
-                    await _context.SaveChangesAsync();
-                }
 
-                
+                }
             }
+            
 
 
             // phan comment
@@ -138,13 +151,16 @@ namespace Album.Areas.Admin.Pages.Deadlines
             }
 
 
-            
 
-            var userFile = _context.userFiles;
+
+            var userFile = _context.userFiles.Where(a => a.file_DeadlineId == id);
 
             userFilesList = userFile.ToList();
 
-            var userComment = from a in _context.Comments select a;
+
+            //var userComment = from a in _context.Comments select a;
+
+            var userComment = _context.Comments.Where(a => a.commentDeadline == id);
 
             userCommentList = userComment.ToList();
 

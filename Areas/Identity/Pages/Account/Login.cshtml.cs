@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using XTLASPNET;
 
 namespace Album.Areas.Identity.Pages.Account {
-    [AllowAnonymous]
+   [AllowAnonymous]
     public class LoginModel : PageModel {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;

@@ -2,7 +2,7 @@
 @model Album.Areas.Admin.Pages.Blog.ViewFindId
 
 @{
-    ViewData["Title"] = "Danh sách bài viết";
+    ViewData["Title"] = "List of event";
 }
 
 
@@ -41,9 +41,9 @@
                     @Html.DisplayFor(modelItem => item.PublishDate)
                 </td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ID">Sửa</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ID">Xem</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ID">Xóa</a>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">View</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
                 </td>
             </tr>
         }

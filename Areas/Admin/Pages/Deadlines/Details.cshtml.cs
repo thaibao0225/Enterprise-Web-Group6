@@ -13,9 +13,12 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Album.Mail;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Album.Areas.Admin.Pages.Deadlines
 {//Admin,A Marketing Management,A Marketing Coordinator,Student
+    [Authorize(Roles = "Admin,A Marketing Management,A Marketing Coordinator,Student")]
+
     public class DetailsModel : PageModel
     {
         private readonly AppDbContext _context;

@@ -16,7 +16,7 @@ using Album.Services;
 using System.IO.Compression;
 
 namespace Album.Areas.Admin.Pages.fileManagement
-{
+{//Admin,A Marketing Management,A Marketing Coordinator
     public class IndexModel : PageModel
     {
         private readonly AppDbContext _context;

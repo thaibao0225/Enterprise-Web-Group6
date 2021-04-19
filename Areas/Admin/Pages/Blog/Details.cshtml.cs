@@ -10,6 +10,7 @@ using Album.Models;
 
 namespace Album.Areas.Admin.Pages.Blog
 {
+    //Admin,A Marketing Management,A Marketing Coordinator,Student
     public class DetailsModel : PageModel
     {
         private readonly Album.Data.AppDbContext _context;

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Album.Areas.Admin.Pages.Role {
+    //Admin
     public class UserModel : PageModel {
         const int USER_PER_PAGE = 10;
         private readonly RoleManager<IdentityRole> _roleManager;

@@ -15,7 +15,7 @@ using Album.Mail;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Album.Areas.Admin.Pages.Deadlines
-{
+{//Admin,A Marketing Management,A Marketing Coordinator,Student
     public class DetailsModel : PageModel
     {
         private readonly AppDbContext _context;

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Album.Areas.Admin.Pages.Deadlines
-{
+{//Admin,A Marketing Management,A Marketing Coordinator,Student
     public class IndexModel : PageModel
     {
         private readonly AppDbContext _context;

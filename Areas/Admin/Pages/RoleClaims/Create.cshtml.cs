@@ -10,7 +10,7 @@ using Album.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace Album.Areas.Admin.Pages.RoleClaims
-{
+{//Admin
     public class CreateModel : PageModel
     {
         private readonly AppDbContext _context;

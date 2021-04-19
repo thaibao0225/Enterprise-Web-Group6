@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Album.Areas.Admin.Pages.RoleClaims
-{
+{//Admin
     public class DeleteModel : PageModel {
         private readonly AppDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;

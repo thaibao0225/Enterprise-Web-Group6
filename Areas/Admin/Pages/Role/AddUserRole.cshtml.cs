@@ -11,7 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Album.Areas.Admin.Pages.Role {
-  public class AddUserRole : PageModel {
+    //Admin
+    public class AddUserRole : PageModel {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<AppUser> _userManager;
 

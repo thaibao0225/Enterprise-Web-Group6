@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Album.Data;
 using Album.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Album.Areas.Admin.Pages.Blog
-{
+{//Admin,A Marketing Management,A Marketing Coordinator
     public class CreateModel : PageModel
     {
         private readonly AppDbContext _context;

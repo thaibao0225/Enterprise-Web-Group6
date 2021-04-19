@@ -56,6 +56,11 @@ namespace Album.Areas.Admin.Pages.Deadlines
         [BindProperty]
         public string mess { get; set; }
 
+        [BindProperty]
+        public List<GradeManagemet> Grade { get; set; }
+
+        public GradeManagemet GradeManagemet { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -69,6 +74,8 @@ namespace Album.Areas.Admin.Pages.Deadlines
             var userFile = _context.userFiles.Where(a => a.file_DeadlineId == id);
 
             userFilesList = userFile.ToList();
+
+            Grade = _context.gradeManagemens.Where(a => a.DeadIdG == id).ToList();
 
             /// Hien thi Comment
             /// var article = from a in _context.Article select a; 
@@ -161,6 +168,23 @@ namespace Album.Areas.Admin.Pages.Deadlines
                 }
             }
             
+            //Phan Grade
+            if (Grade != null)
+            {
+                foreach (var item in Grade)
+                {
+                    GradeManagemet = new GradeManagemet()
+                    {
+                        DeadIdG = id,
+                        grade = item.grade
+                    };
+                }
+                
+
+                _context.gradeManagemens.Add(GradeManagemet);
+                await _context.SaveChangesAsync();
+            }
+
             // phan comment
             if (cmtContext != null)
             {
@@ -175,6 +199,8 @@ namespace Album.Areas.Admin.Pages.Deadlines
                 _context.Comments.Add(cuurentComment);
                 await _context.SaveChangesAsync();
             }
+
+            Grade = _context.gradeManagemens.Where(a=> a.DeadIdG == id).ToList();
 
 
 

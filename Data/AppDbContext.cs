@@ -40,6 +40,7 @@ namespace Album.Data {
             builder.ApplyConfiguration(new CommentConfigurations());
             builder.ApplyConfiguration(new FileConfigurations());
             builder.ApplyConfiguration(new RegisterCourseConfigurations());
+            builder.ApplyConfiguration(new GradeConfigurations());
 
 
 
@@ -52,7 +53,7 @@ namespace Album.Data {
         public DbSet<Deadline> Deadline { set; get; }
         public DbSet<UserFile> userFiles { set; get; }
         public DbSet<RegisterCourse> RegisterCourse { set; get; }
-        public DbSet<GradeManagemen> gradeManagemens { set; get; }
+        public DbSet<GradeManagemet> gradeManagemens { set; get; }
 
 
     }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace Album.Areas.Admin.Pages.Role {
+    //Admin
     public class AddModel : PageModel {
         private readonly RoleManager<IdentityRole> _roleManager;
 

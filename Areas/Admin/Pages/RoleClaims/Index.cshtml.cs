@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Album.Areas.Admin.Pages.RoleClaims
-{
- 
+{//Admin
+
     public class IndexModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;

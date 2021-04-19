@@ -10,7 +10,7 @@ using Album.Data;
 using Album.Models;
 
 namespace Album.Areas.Admin.Pages.Deadlines
-{
+{//Admin,A Marketing Management,A Marketing Coordinator
     public class EditModel : PageModel
     {
         private readonly AppDbContext _context;

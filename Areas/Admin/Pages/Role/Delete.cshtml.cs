@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace Album.Areas.Admin.Pages.Role {
-  public class DeleteModel : PageModel {
+    //Admin
+    public class DeleteModel : PageModel {
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public DeleteModel (RoleManager<IdentityRole> roleManager) {

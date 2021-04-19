@@ -9,7 +9,7 @@ using Album.Data;
 using Album.Models;
 
 namespace Album.Areas.Admin.Pages.CourseManagement
-{
+{//Admin,A Marketing Management,A Marketing Coordinator,Student
     public class DetailsModel : PageModel
     {
         private readonly AppDbContext _context;

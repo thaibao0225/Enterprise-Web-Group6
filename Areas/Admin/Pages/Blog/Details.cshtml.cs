@@ -10,9 +10,13 @@ using Album.Models;
 
 namespace Album.Areas.Admin.Pages.Blog
 {
+    //Admin,A Marketing Management,A Marketing Coordinator,Student
     public class DetailsModel : PageModel
     {
         private readonly Album.Data.AppDbContext _context;
+
+        [BindProperty]
+        public List<Deadline> DeadlineList { get; set; }
 
         public DetailsModel(Album.Data.AppDbContext context)
         {
@@ -27,6 +31,9 @@ namespace Album.Areas.Admin.Pages.Blog
             {
                 return NotFound();
             }
+
+            DeadlineList = _context.Deadline.Where(a => a.ArticleId == id).ToList();
+            
 
             Article = await _context.Article.FirstOrDefaultAsync(m => m.ID == id);
 

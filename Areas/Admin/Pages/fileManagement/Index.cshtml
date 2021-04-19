@@ -1,0 +1,99 @@
+﻿@page "/file-management/"
+@model Album.Areas.Admin.Pages.fileManagement.IndexModel
+@{
+    ViewData["Title"] = "Danh sách File";
+}
+<h1>Danh sách File</h1>
+
+<form method="get" asp-page="./Index">
+    <p>
+        Title: <input type="text"  />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<form method="post" asp-page="./Index">
+    <p>
+        <input type="checkbox" asp-for="@Model.checkboxaa" checked="@Model.checkboxaa">
+        <label asp-for="checkboxaa"></label><br>
+        <input type="submit" value="check" />
+    </p>
+</form>
+
+<form method="post" asp-page="./Index">
+    <p>
+        <input type="checkbox" asp-for="@Model.sort" checked="@Model.sort">
+        <label asp-for="sort"></label><br>
+        <input type="submit" value="Sort Select" />
+    </p>
+</form>
+
+<form method="get" asp-page="./DownFile"  >
+    <p>
+        <input type="submit" value="Sort Select New" />
+    </p>
+</form>
+
+<form method="post" asp-page="./index">
+    <table class="table">
+        <tr>
+            <th>
+                <div>
+                    <label>Event</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <label>Deadline</label>
+                </div>
+            </th>
+            <th>
+                <div typeof="hidden">
+                    <label>File ID</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <label>File</label>
+                </div>
+            </th>
+            <th>
+                <div>
+                </div>
+            </th>
+        </tr>
+        @{
+            for (int i = 0; i < Model.FileManagementList.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <label asp-for="@Model.FileManagementList[i].NameEvent"></label>
+                        <input asp-for="@Model.FileManagementList[i].NameEvent" value="@Model.FileManagementList[i].NameEvent" hidden />
+                    </td>
+                    <td>
+                        <label asp-for="@Model.FileManagementList[i].NameDeadline"></label>
+                        <input asp-for="@Model.FileManagementList[i].NameDeadline" value="@Model.FileManagementList[i].NameDeadline" hidden />
+                    </td>
+                    <td>
+
+                        <label asp-for="@Model.FileManagementList[i].FileId"><a href="#">@Model.FileManagementList[i].FileId</a></label>
+                        <input asp-for="@Model.FileManagementList[i].FileId" value="@Model.FileManagementList[i].FileId" hidden />
+                    </td>
+                    <td>
+
+                        <label asp-for="@Model.FileManagementList[i]"><a href="#">@Model.FileManagementList[i].NameFile</a></label>
+                        <input asp-for="@Model.FileManagementList[i].NameFile" value="@Model.FileManagementList[i].NameDeadline" hidden />
+                    </td>
+                    <td>
+                        <input type="checkbox" checked=@Model.FileManagementList[i].FileSelect asp-for="@Model.FileManagementList[i].FileSelect">
+                        <label asp-for="@Model.FileManagementList[i].FileSelect"></label><br>
+                    </td>
+                </tr>
+            }
+        }
+        
+
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
+    

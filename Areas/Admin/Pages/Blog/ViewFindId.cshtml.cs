@@ -10,7 +10,7 @@ using Album.Data;
 using Album.Models;
 
 namespace Album.Areas.Admin.Pages.Blog
-{
+{//Admin,A Marketing Management,A Marketing Coordinator,Student
     public class ViewFindId : PageModel
     {
         private readonly AppDbContext _context;

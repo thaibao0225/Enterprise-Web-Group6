@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Album.Areas.Admin.Pages.Role
 {
- 
+    //Admin
     public class IndexModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;

@@ -1,0 +1,39 @@
+﻿@page "/Add-UserCourse/"
+@model Album.Areas.Admin.Pages.CourseManagement.AddUserModel
+@{
+}
+
+
+<form asp-page="./AddUser" method="post">
+    <table>
+        <tr>
+            <th> <label asp-for="NameUser">User:</label> </th>
+            <td>
+                <select asp-for="NameUser">
+                    @{
+                        foreach (var item in Model.AppUserList)
+                        {
+                            <option> @item.FullName </option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th> <label asp-for="NameCourse">Course:</label> </th>
+            <td>
+                <select asp-for="NameCourse">
+                    @{
+                        foreach (var item in Model.CourseList)
+                        {
+                            <option> @item.course_Name </option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+   
+    <input type="submit" value="Submit">
+</form>

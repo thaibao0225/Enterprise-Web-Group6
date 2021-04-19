@@ -9,7 +9,8 @@ using Album.Data;
 using Album.Models;
 
 namespace Album.Areas.Admin.Pages.Blog
-{
+{//Admin,A Marketing Management,A Marketing Coordinator
+
     public class DeleteModel : PageModel
     {
         private readonly Album.Data.AppDbContext _context;

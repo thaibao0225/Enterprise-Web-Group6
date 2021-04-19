@@ -37,35 +37,55 @@
 </div>
 <div>
     <form method="post" enctype="multipart/form-data">
-        @*<label asp-for="@Model.FileUploads"></label>*@
-        <input asp-for="@Model.FileUploads" />
-        <br />
-        @*<span asp-validation-formaction="@Model.FileUploads"></span>*@
-
-        @{ 
-            foreach (var item in Model.userFilesList)
-            {
-                <div>
-                    <img src="https://cms.greenwich.edu.vn/theme/image.php/adaptable/core/1596790129/f/pdf" alt="pdf" />
-                    <a href="#">@item.Title</a>
-                </div>
+        <div>
+            <input asp-for="@Model.FileUploads" />
+            <br />
+            @{
+                foreach (var item in Model.userFilesList)
+                {
+                        <div>
+                            <img src="~/image/pdf.png" height="30px" width="auto" />
+                            <a href="#">@item.Title</a>
+                        </div>
+                }
             }
-        }
-        <button class="btn btn-danger"  asp-page="Details" >Upload</button>
+        </div>
+        <div>
+            <br />
+            <label>@Model.mess</label>
+            <br />
+            <input type="checkbox" asp-for="agreeSubmit" />
+            <br />
+            <label>Agree to Submit</label>
+        </div>
+        <div>
+            @*asp-page="Details"*@
+            <button class="btn btn-danger">Upload</button>
+        </div>
+
+        
     </form>
 </div>
-@*<hr />
+<hr />
 <div>
     <h3>Phần comment</h3>
     <div>
         <form method="post">
+            @{
+                foreach (var item in Model.userCommentList)
+                {
+                    <label>User</label>
+                    <input type="text" value=@item.comment_Content  readonly/>
+                    <br />
+                }
+            }
+
             <label>User</label>
-            <input type="text" value="nhap comment" asp-for="cuurentComment.comment_Content" />
+            <input type="text" asp-for="cmtContext" />
             <button class="btn btn-danger" asp-page="Details">Comment</button>
         </form>
-        
     </div>
-</div>*@
+</div>
 <div>
     @*<a asp-page="./Edit" asp-route-id="@Model.Deadline.dl_Id">Edit</a>*@
     <a asp-page="./Index">Back to List</a>

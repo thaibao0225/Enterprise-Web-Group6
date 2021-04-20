@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "File List";
 }
-<h1>Danh sách File</h1>
+<h1>File List</h1>
 
 <form method="get" asp-page="./Index">
     <p>
@@ -12,25 +12,22 @@
     </p>
 </form>
 
-<form method="post" asp-page="./Index">
-    <p>
-        <input type="checkbox" asp-for="@Model.checkboxaa" checked="@Model.checkboxaa">
-        <label asp-for="checkboxaa"></label><br>
-        <input type="submit" value="check" />
-    </p>
-</form>
 
 <form method="post" asp-page="./Index">
     <p>
-        <input type="checkbox" asp-for="@Model.sort" checked="@Model.sort">
-        <label asp-for="sort"></label><br>
+        @*<input type="checkbox" asp-for="@Model.sort" checked="@Model.sort">
+        <label asp-for="sort"></label><br>*@
+        <select>
+            <option value="IoT">IoT</option>
+            <option value="BI">BI</option>
+        </select>
         <input type="submit" value="Sort Select" />
     </p>
 </form>
 
 <form method="get" asp-page="./DownFile"  >
     <p>
-        <input type="submit" value="Sort Select New" />
+        <input type="submit" value="Sort Select New" method="get" asp-page="./DownFile" />
     </p>
 </form>
 
@@ -91,7 +88,7 @@
                 </tr>
             }
         }
-        
+
 
     </table>
     <input type="submit" value="Save" class="btn btn-primary" />

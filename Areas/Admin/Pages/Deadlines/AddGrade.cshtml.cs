@@ -9,8 +9,10 @@ namespace Album.Areas.Admin.Pages.Deadlines
 {
     public class AddGradeModel : PageModel
     {
+
         public void OnGet()
         {
+
         }
     }
 }

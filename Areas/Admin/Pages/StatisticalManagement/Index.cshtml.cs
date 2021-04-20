@@ -24,11 +24,6 @@ namespace Album.Areas.Admin.Pages.StatisticalManagement
         public List<StatisticalAsm2> statisticalAsm2List { get; set; }
 
 
-
-        private bool Yes1 { get; set; }
-        private bool No1 { get; set; }
-
-
         public IndexModel(AppDbContext Context)
         {
             _Context = Context;

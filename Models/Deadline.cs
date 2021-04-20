@@ -51,7 +51,7 @@ namespace Album.Models
 
         public List<Comment> Comment { get; set; }
 
-        public List<GradeManagemet> gradeManagemets { get; set; }
+        
 
 
 

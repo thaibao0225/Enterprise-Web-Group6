@@ -26,5 +26,7 @@ namespace Album.Models
         public List<Deadline> Deadline { get; set; }
         public int courseId { get; set; }
         public Course course { get; set; }
+        public List<RegisterGrade> RegisterGrade { get; set; }
+
     }
 }

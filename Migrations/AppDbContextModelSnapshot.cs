@@ -200,22 +200,17 @@ namespace Album.Migrations
                     b.ToTable("Deadlines");
                 });
 
-            modelBuilder.Entity("Album.Models.GradeManagemet", b =>
+            modelBuilder.Entity("Album.Models.GradeManagementt", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DeadIdG")
-                        .HasColumnType("int");
-
                     b.Property<int>("grade")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeadIdG");
 
                     b.ToTable("gradeManagemens");
                 });
@@ -233,6 +228,26 @@ namespace Album.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("RegisterCourse");
+                });
+
+            modelBuilder.Entity("Album.Models.RegisterGrade", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GradeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "GradeId", "EventId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("GradeId");
+
+                    b.ToTable("RegisterGrade");
                 });
 
             modelBuilder.Entity("Album.Models.UserFile", b =>
@@ -422,15 +437,6 @@ namespace Album.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Album.Models.GradeManagemet", b =>
-                {
-                    b.HasOne("Album.Models.Deadline", "Deadline")
-                        .WithMany("gradeManagemets")
-                        .HasForeignKey("DeadIdG")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Album.Models.RegisterCourse", b =>
                 {
                     b.HasOne("Album.Models.Course", "Course")
@@ -441,6 +447,27 @@ namespace Album.Migrations
 
                     b.HasOne("Album.Models.AppUser", "AppUser")
                         .WithMany("RegisterCourse")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Album.Models.RegisterGrade", b =>
+                {
+                    b.HasOne("Album.Models.Article", "Article")
+                        .WithMany("RegisterGrade")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Album.Models.GradeManagementt", "GradeManagementt")
+                        .WithMany("RegisterGrade")
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Album.Models.AppUser", "AppUser")
+                        .WithMany("RegisterGrade")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

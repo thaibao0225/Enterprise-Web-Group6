@@ -57,9 +57,9 @@ namespace Album.Areas.Admin.Pages.Deadlines
         public string mess { get; set; }
 
         [BindProperty]
-        public List<GradeManagemet> Grade { get; set; }
+        public List<GradeManagementt> Grade { get; set; }
 
-        public GradeManagemet GradeManagemet { get; set; }
+        public GradeManagementt GradeManagemet { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -75,7 +75,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
 
             userFilesList = userFile.ToList();
 
-            Grade = _context.gradeManagemens.Where(a => a.DeadIdG == id).ToList();
+           // Grade = _context.gradeManagemens.Where(a => a.DeadIdG == id).ToList();
 
             /// Hien thi Comment
             /// var article = from a in _context.Article select a; 
@@ -122,68 +122,87 @@ namespace Album.Areas.Admin.Pages.Deadlines
                 Email = item.aU.Email;
             }
 
-            if (agreeSubmit)
+            var queryDeadlineDate = _context.Deadline.Where(a => a.dl_Id == id);
+
+            DateTime time = DateTime.Now.ToLocalTime();
+
+            foreach (var itemDLDate in queryDeadlineDate)
             {
                 
-
-                if (FileUploads != null) 
+                if (time <= itemDLDate.dl_TimeDeadline)
                 {
-                    string supportedTypes = ".pdf";
-                    
-                    foreach (var FileUpload in FileUploads)
+                    if (agreeSubmit)
                     {
-                        
-                        string[] arrListStr = FileUpload.FileName.Split('.');
-                        if (supportedTypes.Contains(arrListStr[1]))
+
+                        if (FileUploads != null)
                         {
-                            string mess = "You was submited" + FileUpload.FileName;
+                            string supportedTypes = ".pdf";
 
-                            await _emailSender.SendEmailAsync("thaibao0225@gmail.com", mess, "Submited");
-
-                            string path = "wwwroot\\uploads";
-
-                            var file = Path.Combine(_environment.ContentRootPath, path, FileUpload.FileName);
-                            using (var fileStream = new FileStream(file, FileMode.Create))
+                            foreach (var FileUpload in FileUploads)
                             {
-                                await FileUpload.CopyToAsync(fileStream);
+
+                                string[] arrListStr = FileUpload.FileName.Split('.');
+                                if (supportedTypes.Contains(arrListStr[1]))
+                                {
+                                    string mess = "You was submited" + FileUpload.FileName;
+
+                                    await _emailSender.SendEmailAsync("thaibao0225@gmail.com", mess, "Submited");
+
+                                    string path = "wwwroot\\uploads";
+
+                                    var file = Path.Combine(_environment.ContentRootPath, path, FileUpload.FileName);
+                                    using (var fileStream = new FileStream(file, FileMode.Create))
+                                    {
+                                        await FileUpload.CopyToAsync(fileStream);
+                                    }
+
+                                    UserFile = new UserFile()
+                                    {
+                                        Title = FileUpload.FileName,
+                                        file_IsSelected = false,
+                                        file_DeadlineId = id,
+                                        file_CreateBy = "Thai Bao"
+                                    };
+                                    _context.userFiles.Add(UserFile);
+                                    await _context.SaveChangesAsync();
+
+                                    mess = "";
+                                }
+                                else
+                                {
+                                    mess = "Only .pdf";
+                                }
                             }
-
-                            UserFile = new UserFile()
-                            {
-                                Title = FileUpload.FileName,
-                                file_IsSelected = false,
-                                file_DeadlineId = id,
-                                file_CreateBy = "Thai Bao"
-                            };
-                            _context.userFiles.Add(UserFile);
-                            await _context.SaveChangesAsync();
-
-                            mess = "";
-                        }
-                        else
-                        {
-                            mess = "Only .pdf";
                         }
                     }
                 }
-            }
-            
-            //Phan Grade
-            if (Grade != null)
-            {
-                foreach (var item in Grade)
+                else
                 {
-                    GradeManagemet = new GradeManagemet()
-                    {
-                        DeadIdG = id,
-                        grade = item.grade
-                    };
-                }
-                
+                    //internal deadline expires
+                    mess = "internal deadline expires";
 
-                _context.gradeManagemens.Add(GradeManagemet);
-                await _context.SaveChangesAsync();
+                }
+
             }
+
+            
+
+            ////Phan Grade
+            //if (Grade != null)
+            //{
+            //    foreach (var item in Grade)
+            //    {
+            //        GradeManagemet = new GradeManagemet()
+            //        {
+            //            DeadIdG = id,
+            //            grade = item.grade
+            //        };
+            //    }
+
+
+            //    // _context.gradeManagemens.Add(GradeManagemet);
+            //    //await _context.SaveChangesAsync();
+            //}
 
             // phan comment
             if (cmtContext != null)
@@ -200,7 +219,7 @@ namespace Album.Areas.Admin.Pages.Deadlines
                 await _context.SaveChangesAsync();
             }
 
-            Grade = _context.gradeManagemens.Where(a=> a.DeadIdG == id).ToList();
+            //Grade = _context.gradeManagemens.Where(a=> a.DeadIdG == id).ToList();
 
 
 

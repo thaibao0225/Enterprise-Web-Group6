@@ -23,7 +23,10 @@ namespace Album.Areas.Admin.Pages.fileManagement
         }
         public void OnGet()
         {
-            NameFile = "Proposal(Nhu).pdf";
+
+            var NameFileRoute = Request.RouteValues["fileName"];
+
+            NameFile = "aaa-a.pdf";
         }
 
 

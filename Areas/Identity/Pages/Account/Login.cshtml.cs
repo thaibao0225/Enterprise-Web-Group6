@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using XTLASPNET;
 
 namespace Album.Areas.Identity.Pages.Account {
-    [AllowAnonymous]
+   [AllowAnonymous]
     public class LoginModel : PageModel {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
@@ -40,17 +40,17 @@ namespace Album.Areas.Identity.Pages.Account {
         public string ErrorMessage { get; set; }
 
         public class InputModel {
-            [Required (ErrorMessage = "Không để trống")]
-            [Display (Name = "Nhập username hoặc email của bạn")]
-            [StringLength (100, MinimumLength = 1, ErrorMessage = "Nhập đúng thông tin")]
+            [Required (ErrorMessage = "Successfully logged out")]
+            [Display (Name = "Enter your username or email")]
+            [StringLength (100, MinimumLength = 1, ErrorMessage = "Enter the correct information")]
             public string UserNameOrEmail { set; get; }
 
             [Required]
             [DataType (DataType.Password)]
-            [Display(Name = "Mật khẩu")]
+            [Display(Name = "password")]
             public string Password { get; set; }
 
-            [Display (Name = "Nhớ thông tin đăng nhập?")]
+            [Display (Name = "Remember your login information?")]
             public bool RememberMe { get; set; }
         }
 
@@ -82,7 +82,7 @@ namespace Album.Areas.Identity.Pages.Account {
 
                 if (user == null) 
                 {
-                    ModelState.AddModelError (string.Empty, "Tài khoản không tồn tại.");
+                    ModelState.AddModelError (string.Empty, "Account does not exist.");
                     return Page ();
                 }   
 
@@ -95,7 +95,7 @@ namespace Album.Areas.Identity.Pages.Account {
 
 
                 if (result.Succeeded) {
-                    _logger.LogInformation ("User đã đăng nhập");
+                    _logger.LogInformation ("User logged in");
                     return ViewComponent(MessagePage.COMPONENTNAME, new MessagePage.Message() {
                         title = "Đã đăng nhập",
                         htmlcontent = "Đăng nhập thành công",
@@ -107,11 +107,11 @@ namespace Album.Areas.Identity.Pages.Account {
                     return RedirectToPage ("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
                 if (result.IsLockedOut) {
-                    _logger.LogWarning ("Tài khoản bí tạm khóa.");
+                    _logger.LogWarning ("Account temporarily locked.");
                     // Chuyển hướng đến trang Lockout - hiện thị thông báo
                     return RedirectToPage ("./Lockout");
                 } else {
-                    ModelState.AddModelError (string.Empty, "Không đăng nhập được.");
+                    ModelState.AddModelError (string.Empty, "Can not login.");
                     return Page ();
                 }
             }

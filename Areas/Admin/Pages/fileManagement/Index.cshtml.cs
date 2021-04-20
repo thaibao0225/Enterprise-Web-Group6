@@ -14,9 +14,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Album.Services;
 using System.IO.Compression;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Album.Areas.Admin.Pages.fileManagement
 {//Admin,A Marketing Management,A Marketing Coordinator
+    [Authorize(Roles = "Admin,A Marketing Management,A Marketing Coordinator")]
+
     public class IndexModel : PageModel
     {
         private readonly AppDbContext _context;

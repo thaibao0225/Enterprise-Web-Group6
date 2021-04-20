@@ -27,7 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Pages\Role\" />
-    <Folder Include="uploads\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\uploads\Proposal(Nhu).pdf" />

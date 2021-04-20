@@ -45,6 +45,8 @@ namespace Album.Areas.Identity.Pages.Account {
             [StringLength (100, MinimumLength = 1, ErrorMessage = "Enter the correct information")]
             public string UserNameOrEmail { set; get; }
 
+            
+
             [Required]
             [DataType (DataType.Password)]
             [Display(Name = "password")]
@@ -75,7 +77,7 @@ namespace Album.Areas.Identity.Pages.Account {
             if (_signInManager.IsSignedIn (User)) return Redirect ("Index");
 
             if (ModelState.IsValid) {
-    
+                Data.Data.UserName = Input.UserNameOrEmail;
                 IdentityUser user = await _userManager.FindByEmailAsync (Input.UserNameOrEmail);
                 if (user == null) 
                     user = await _userManager.FindByNameAsync(Input.UserNameOrEmail);
@@ -92,9 +94,11 @@ namespace Album.Areas.Identity.Pages.Account {
                         Input.RememberMe,
                         true
                     );
-
+                
 
                 if (result.Succeeded) {
+
+                    
                     _logger.LogInformation ("User logged in");
                     return ViewComponent(MessagePage.COMPONENTNAME, new MessagePage.Message() {
                         title = "Đã đăng nhập",

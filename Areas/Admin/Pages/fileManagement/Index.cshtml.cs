@@ -46,6 +46,12 @@ namespace Album.Areas.Admin.Pages.fileManagement
         [BindProperty]
         public bool sort { get; set; }
 
+        [BindProperty]
+        public string NameSort { get; set; }
+
+        [BindProperty]
+        public List<string> sortEvent { get; set; }
+
 
         private readonly IFileService _fileService;
 
@@ -57,61 +63,13 @@ namespace Album.Areas.Admin.Pages.fileManagement
         }
         public async Task<IActionResult> OnGet()
         {
-            var userFileQuery = from a in _context.userFiles select a;
 
-            var query = from a in _context.Article
-                        join b in _context.Deadline on a.ID equals b.ArticleId
-                        join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
-                        select new { a, b, cc };
+            var dataEvent = from a in _context.Article select a.Title;
 
-            var data = await query
-               .Select(x => new FileManagement()
-               {
-                   NameEvent = x.a.Title,
-                   NameFile = x.cc.Title,
-                   NameDeadline = x.b.Title,
-                   FileSelect = x.cc.file_IsSelected,
-                   FileId = x.cc.ID,
-
-                   DeadId = x.b.dl_Id
-               }).ToListAsync();
-            FileManagementList = data.ToList();
-
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-
-            var userFileQuery = from aa in _context.userFiles select aa;
-
-            for (int i = 0; i < FileManagementList.Count; i++)
-            {
-                var fileNameTraVe = FileManagementList[i].FileId;
-                var buserFile = userFileQuery.Where(a => a.Title.Contains(FileManagementList[i].FileId.ToString()));
-
-                if (buserFile == null)
-                {
-                    return BadRequest("false");
-                }
-                var files = await _context.userFiles.FindAsync(fileNameTraVe);
-                files.ID = fileNameTraVe;
-                bool aaa = FileManagementList[i].FileSelect;
-                files.file_IsSelected = aaa;
-                _context.Update(files);
-            }
-            await _context.SaveChangesAsync();
-
-
-
-            if (down)
-            {
-                await DownloadFilesAsync();
-            }
+            sortEvent = await dataEvent.ToListAsync();
 
             //Print
-            if (sort)
+            if (NameSort == "All")
             {
                 var query = from a in _context.Article
                             join b in _context.Deadline on a.ID equals b.ArticleId
@@ -147,10 +105,89 @@ namespace Album.Areas.Admin.Pages.fileManagement
                        FileSelect = x.cc.file_IsSelected,
                        FileId = x.cc.ID
                    }).ToListAsync();
+                var buserFileSort = data.Where(a => a.FileSelect == true && a.NameEvent == NameSort);
+
+                FileManagementList = data.ToList();
+            }
+
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+
+            var userFileQuery = from aa in _context.userFiles select aa;
+
+            for (int i = 0; i < FileManagementList.Count; i++)
+            {
+                var fileNameTraVe = FileManagementList[i].FileId;
+                var buserFile = userFileQuery.Where(a => a.Title.Contains(FileManagementList[i].FileId.ToString()));
+
+                if (buserFile == null)
+                {
+                    return BadRequest("false");
+                }
+                var files = await _context.userFiles.FindAsync(fileNameTraVe);
+                files.ID = fileNameTraVe;
+                bool aaa = FileManagementList[i].FileSelect;
+                files.file_IsSelected = aaa;
+                _context.Update(files);
+            }
+            await _context.SaveChangesAsync();
+
+            
+
+            if (down)
+            {
+                await DownloadFilesAsync();
+            }
+
+            var dataEvent = from a in _context.Article select a.Title;
+            sortEvent = await dataEvent.ToListAsync();
+
+            //Print
+            if (NameSort == "All")
+            {
+                var query = from a in _context.Article
+                            join b in _context.Deadline on a.ID equals b.ArticleId
+                            join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                            select new { a, b, cc };
+
+                var data = await query
+                   .Select(x => new FileManagement()
+                   {
+                       NameEvent = x.a.Title,
+                       NameFile = x.cc.Title,
+                       NameDeadline = x.b.Title,
+                       FileSelect = x.cc.file_IsSelected,
+                       FileId = x.cc.ID
+                   }).ToListAsync();
+                var buserFileSort = data.Where(a => a.FileSelect == true );
+
+                FileManagementList = buserFileSort.ToList();
+            }
+            else
+            {
+                var query = from a in _context.Article
+                            join b in _context.Deadline on a.ID equals b.ArticleId
+                            join cc in _context.userFiles on b.dl_Id equals cc.file_DeadlineId
+                            select new { a, b, cc };
+
+                var data = await query
+                   .Select(x => new FileManagement()
+                   {
+                       NameEvent = x.a.Title,
+                       NameFile = x.cc.Title,
+                       NameDeadline = x.b.Title,
+                       FileSelect = x.cc.file_IsSelected,
+                       FileId = x.cc.ID
+                   }).ToListAsync();
+                var buserFileSort = data.Where(a => a.FileSelect == true && a.NameEvent == NameSort);
+
                 FileManagementList = data.ToList();
             }
             return Page();
-            // Print 
         }
 
 
@@ -177,7 +214,6 @@ namespace Album.Areas.Admin.Pages.fileManagement
                         }
 
                     }
-
 
                 }
 

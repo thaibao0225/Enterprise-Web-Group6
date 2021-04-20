@@ -21,10 +21,8 @@ namespace Album.Areas.Admin.Pages.fileManagement
         {
            _environment = environment;
         }
-        public void OnGet()
+        public void OnGet(string fileName)
         {
-
-            var NameFileRoute = Request.RouteValues["fileName"];
 
             NameFile = "aaa-a.pdf";
         }
